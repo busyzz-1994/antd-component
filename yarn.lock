@@ -1651,6 +1651,10 @@ console-control-strings@^1.0.0, console-control-strings@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
 
+consolev@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/consolev/-/consolev-1.0.5.tgz#be8679a0ad1777c1731adf2d302ae924ca9c46c1"
+
 constants-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/constants-browserify/-/constants-browserify-1.0.0.tgz#c20b96d8c617748aaf1c16021760cd27fcb8cb75"
