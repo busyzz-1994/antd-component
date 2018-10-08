@@ -3,9 +3,12 @@ import ReactDOM from 'react-dom';
 import consolev from 'consolev';
 import './index.css';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import * as serviceWorker from './serviceWorker';
 
-consolev(process.env.REACT_APP_NAME, process.env.REACT_APP_PROXY);
+consolev(process.env.REACT_APP_NAME);
 
 ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: http://bit.ly/CRA-PWA
+serviceWorker.unregister();
