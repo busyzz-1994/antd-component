@@ -2,7 +2,7 @@ variables:
   # 用于预览的域名
   AUTO_DEVOPS_DOMAIN: fintechgo.com
   # 不带标签的镜像仓库地址 这里要改成你的镜像地址（或者修改react-mobx为项目名）
-  CI_REGISTRY_IMAGE: harbor.bdfint.com/bd/react-mobx
+  CI_REGISTRY_IMAGE: harbor.bdfint.com/bd/$KUBE_NAMESPACE
 
 image: modules/kubectl
 

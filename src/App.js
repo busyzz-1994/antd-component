@@ -1,15 +1,14 @@
-import React, {Component, Fragment} from 'react';
-import {observable} from 'mobx';
-import {Provider} from 'mobx-react';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import React, { Component, Fragment } from 'react';
+import { observable } from 'mobx';
+import { Provider } from 'mobx-react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import DevTools from 'mobx-react-devtools';
 import logo from './logo.svg';
-import Demo from './modules/Demo';
+import Demo from './pages/Demo';
+import UserModel from './models/UserModel';
 import './App.css';
 
-const user = observable({
-  name: "刘峰"
-})
+const user = new UserModel();
 
 class App extends Component {
   render() {
@@ -17,7 +16,7 @@ class App extends Component {
       <Provider user={user}>
         <Fragment>
           <div className="App">
-            <DevTools/>
+            <DevTools />
             <header className="App-header">
               <img src={logo} className="App-logo" alt="logo" />
               <h1 className="App-title">Welcome to React</h1>
@@ -28,7 +27,7 @@ class App extends Component {
           </div>
           <Router>
             <Switch>
-              <Route exact path="/demo" component={Demo}/>
+              <Route exact path="/" component={Demo} />
             </Switch>
           </Router>
         </Fragment>
