@@ -61,9 +61,9 @@ module.exports = function(api, opts, env) {
         require('@babel/preset-env').default,
         {
           targets: {
-            node: 'current'
-          }
-        }
+            node: 'current',
+          },
+        },
       ],
       (isEnvProduction || isEnvDevelopment) && [
         // Latest stable ECMAScript features
@@ -72,7 +72,7 @@ module.exports = function(api, opts, env) {
           // We want Create React App to be IE 9 compatible until React itself
           // no longer works with IE 9
           targets: {
-            ie: 9
+            ie: 9,
           },
           // Users cannot override this behavior because this Babel
           // configuration is highly tuned for ES5 support
@@ -81,8 +81,8 @@ module.exports = function(api, opts, env) {
           // bundle size. We shouldn't rely on magic to try and shrink it.
           useBuiltIns: false,
           // Do not transform modules to CJS
-          modules: false
-        }
+          modules: false,
+        },
       ],
       [
         require('@babel/preset-react').default,
@@ -92,12 +92,16 @@ module.exports = function(api, opts, env) {
           development: isEnvDevelopment || isEnvTest,
           // Will use the native built-in instead of trying to polyfill
           // behavior for any plugins that require one.
-          useBuiltIns: true
-        }
+          useBuiltIns: true,
+        },
       ],
-      isFlowEnabled && [require('@babel/preset-flow').default]
     ].filter(Boolean),
     plugins: [
+      // Strip flow types before any other transform, emulating the behavior
+      // order as-if the browser supported all of the succeeding features
+      // https://github.com/facebook/create-react-app/pull/5182
+      isFlowEnabled &&
+        require('@babel/plugin-transform-flow-strip-types').default,
       // Experimental macros support. Will be documented after it's had some time
       // in the wild.
       require('babel-plugin-macros'),
@@ -118,8 +122,8 @@ module.exports = function(api, opts, env) {
       [
         require('@babel/plugin-proposal-class-properties').default,
         {
-          loose: true
-        }
+          loose: true,
+        },
       ],
       // The following two plugins use Object.assign directly, instead of Babel's
       // extends helper. Note that this assumes `Object.assign` is available.
@@ -127,8 +131,8 @@ module.exports = function(api, opts, env) {
       [
         require('@babel/plugin-proposal-object-rest-spread').default,
         {
-          useBuiltIns: true
-        }
+          useBuiltIns: true,
+        },
       ],
       // Polyfills the runtime needed for async/await, generators, and friends
       // https://babeljs.io/docs/en/babel-plugin-transform-runtime
@@ -145,21 +149,21 @@ module.exports = function(api, opts, env) {
           // Undocumented option that lets us encapsulate our runtime, ensuring
           // the correct version is used
           // https://github.com/babel/babel/blob/090c364a90fe73d36a30707fc612ce037bdbbb24/packages/babel-plugin-transform-runtime/src/index.js#L35-L42
-          absoluteRuntime: absoluteRuntimePath
-        }
+          absoluteRuntime: absoluteRuntimePath,
+        },
       ],
       isEnvProduction && [
         // Remove PropTypes from production build
         require('babel-plugin-transform-react-remove-prop-types').default,
         {
-          removeImport: true
-        }
+          removeImport: true,
+        },
       ],
       // Adds syntax support for import()
       require('@babel/plugin-syntax-dynamic-import').default,
       isEnvTest &&
         // Transform dynamic import to require
-        require('babel-plugin-transform-dynamic-import').default
-    ].filter(Boolean)
+        require('babel-plugin-transform-dynamic-import').default,
+    ].filter(Boolean),
   };
 };

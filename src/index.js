@@ -1,9 +1,12 @@
+import 'react-app-polyfill/ie9';
+import 'core-js/es6/weak-map'; // mobx
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import consolev from 'consolev';
-import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
+import App from './App';
+import './index.css';
 
 consolev(process.env.REACT_APP_NAME);
 
