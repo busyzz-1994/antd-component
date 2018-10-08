@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import { observable } from 'mobx';
 import { Provider } from 'mobx-react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import DevTools from 'mobx-react-devtools';
