@@ -209,7 +209,6 @@ production-aliyun:
     echo "准备删除旧的部署..."
 
     kubectl delete --namespace="$KUBE_NAMESPACE"  -f frontend-deploy.yaml
-    kubectl delete --namespace="$KUBE_NAMESPACE"  -f backend-deploy.yaml
   }
 
 before_script:
