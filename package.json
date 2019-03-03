@@ -1,36 +1,43 @@
 {
-  "name": "react-mobx",
-  "version": "0.0.0",
+  "name": "react-boilerplate",
+  "version": "0.1.0",
   "private": true,
+  "dependencies": {
+    "@types/jest": "^24.0.9",
+    "@types/node": "^11.10.4",
+    "@types/react": "^16.8.6",
+    "@types/react-dom": "^16.8.2",
+    "consolev": "^1.0.6",
+    "cross-env": "^5.2.0",
+    "date-fns": "^1.30.1",
+    "mobx": "^4.3.1",
+    "mobx-react": "^5.2.3",
+    "mobx-react-devtools": "^6.0.2",
+    "pre-commit": "^1.2.2",
+    "preval.macro": "^3.0.0",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.1.5",
+    "typescript": "^3.3.3333"
+  },
+  "devDependencies": {
+    "jest-puppeteer": "^4.0.0"
+  },
   "scripts": {
     "start": "cross-env NODE_PATH=src react-scripts start",
-    "build": "cross-env NODE_PATH=src react-scripts build --stats",
-    "test": "cross-env NODE_PATH=src react-scripts test --env=jsdom",
+    "build": "cross-env NODE_PATH=src react-scripts build",
+    "test": "cross-env NODE_PATH=src react-scripts test",
+    "test:integration": "jest -c integration/jest.config.js",
     "eject": "react-scripts eject",
-    "stats": "npx webpack-bundle-analyzer build/bundle-stats.json",
-    "lint": "eslint src --ext .jsx,.js --cache --fix"
+    "lint": "eslint src --ext .tsx,.ts,.jsx,.js --cache --fix",
+    "stats": "npm run build -- --stats && npx webpack-bundle-analyzer build/bundle-stats.json"
   },
   "pre-commit": [
     "lint"
   ],
-  "dependencies": {
-    "consolev": "^1.0.6",
-    "mobx": "^4.3.1",
-    "mobx-react": "^5.2.3",
-    "mobx-react-devtools": "^6.0.2",
-    "prop-types": "^15.6.2",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
-    "react-router-dom": "^4.3.1"
-  },
-  "devDependencies": {
-    "cross-env": "^5.2.0",
-    "pre-commit": "^1.2.2",
-    "react-scripts": "^2.0.4"
-  },
-  "resolutions": {
-    "babel-preset-react-app": "file:./packages/babel-preset-react-app",
-    "eslint-config-react-app": "file:./packages/eslint-config-react-app"
+  "eslintConfig": {
+    "extends": "react-app"
   },
   "browserslist": [
     ">0.2%",
