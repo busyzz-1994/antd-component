@@ -3,14 +3,15 @@
  */
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
-import UserStore from '../../stores/UserStore';
+import { RouterProps, withRouter } from 'react-router-dom';
+import UserStore from 'stores/UserStore';
 
-type DemoProps = {
+interface DemoProps extends RouterProps {
   user?: UserStore; // injected
-  title: string; // passed as <App title="my title">
-};
+}
 
 @inject('user')
+@withRouter
 @observer
 class Demo extends Component<DemoProps> {
   render() {

@@ -5,9 +5,9 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import logo from './logo.svg';
 import Demo from './pages/Demo';
-import UserModel from './stores/UserStore';
+import UserStore from './stores/UserStore';
 
-const user = new UserModel();
+const user = new UserStore();
 
 class App extends Component {
   render() {
@@ -15,7 +15,9 @@ class App extends Component {
       <Provider user={user}>
         <Fragment>
           <div className="App">
-            <DevTools />
+            {process.env.NODE_ENV === 'development' ? (
+              <DevTools noPanel />
+            ) : null}
             <header className="App-header">
               <img src={logo} className="App-logo" alt="logo" />
               <h1 className="App-title">Welcome to React</h1>
