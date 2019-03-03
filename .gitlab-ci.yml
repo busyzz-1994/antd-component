@@ -169,7 +169,7 @@ production-aliyun:
     # 在当前命名空间中生成 secret
     kubectl describe secret harbor -n "$KUBE_NAMESPACE" || kubectl get secret harbor -o yaml -n default | sed "s/default/${KUBE_NAMESPACE}/g" | kubectl -n "$KUBE_NAMESPACE" create -f -
     # frontend
-    helm template helm/frontend \
+    helm template helm \
       --namespace="$KUBE_NAMESPACE" \
       --name="$KUBE_NAMESPACE-$CI_COMMIT_REF_NAME" \
       --set image.repository="$CI_REGISTRY_IMAGE" \
@@ -178,14 +178,6 @@ production-aliyun:
       > frontend-deploy.yaml
     cat frontend-deploy.yaml
     kubectl apply --namespace="$KUBE_NAMESPACE"  -f frontend-deploy.yaml
-    # backend
-    helm template helm/backend \
-      --namespace="$KUBE_NAMESPACE" \
-      --name="$KUBE_NAMESPACE-$CI_COMMIT_REF_NAME" \
-      --set ingress.hosts[0]="${CI_ENVIRONMENT_URL/http*:\/\//}" \
-      > backend-deploy.yaml
-    cat backend-deploy.yaml
-    kubectl apply --namespace="$KUBE_NAMESPACE"  -f backend-deploy.yaml
   }
   function build() {
     if ! docker info &>/dev/null; then
