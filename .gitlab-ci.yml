@@ -4,9 +4,9 @@ variables:
   # 不带标签的镜像仓库地址，用于推送镜像 （可以修改$CI_PROJECT_PATH_SLUG为你的项目名）
   CI_REGISTRY_IMAGE: harbor.bdfint.com/bd/$CI_PROJECT_PATH_SLUG
   CI_REGISTRY_IMAGE_ALIYUN: registry.cn-beijing.aliyuncs.com/bdfint/${CI_PROJECT_PATH_SLUG}
-  CI_ALIYUN_STAGING_TRIGGER:
-  CI_ALIYUN_PRODUCTION_TRIGGER:
-  CI_ALIYUN_PRODUCTION_URL:
+  CI_ALIYUN_STAGING_TRIGGER: trigger
+  CI_ALIYUN_PRODUCTION_TRIGGER: trigger
+  CI_ALIYUN_PRODUCTION_URL: example.com
 
 image: modules/kubectl
 
