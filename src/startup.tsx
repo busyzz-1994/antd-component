@@ -6,7 +6,6 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-
 consolev(
   process.env.REACT_APP_NAME,
   process.env.REACT_APP_SHA || 'REACT_APP_SHA',
