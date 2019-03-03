@@ -1,12 +1,19 @@
 /**
  * Created by Vincent on 2018/8/6.
  */
-import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import React, { Component } from 'react';
+import { RouterProps, withRouter } from 'react-router-dom';
+import UserStore from 'stores/UserStore';
+
+interface DemoProps extends RouterProps {
+  user?: UserStore; // injected
+}
 
 @inject('user')
+@withRouter
 @observer
-class Demo extends Component {
+class Demo extends Component<DemoProps> {
   render() {
     let { user } = this.props;
     if (!user.loggedIn) {

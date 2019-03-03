@@ -75,17 +75,26 @@ const config = {
 //     return config.$dataHook(data, url, params, options) || data;
 //   });
 // }
-function request_fetch(url, params, options = {}) {
+interface Option {
+  withCredentials?: boolean;
+  method?: string;
+}
+
+function request_fetch(url, params, options: Option = {}) {
   let { withCredentials = false, method = 'post' } = options;
 
+  // @ts-ignore
   config.$beforeHook(url, params, options);
 
   let targetUrl = config.$urlGetter(url);
   let o = {
+    credentials: undefined,
     method,
-    body: JSON.stringify(params || {})
+    body: JSON.stringify(params || {}),
+    headers: undefined
   };
   if (withCredentials) {
+    // @ts-ignore
     const token = config.$tokenGetter();
     if (!token) {
       console.error('缺少必要的参数 token', url, params, options);
@@ -104,16 +113,19 @@ function request_fetch(url, params, options = {}) {
     .then(response => response.json())
     .then(
       data => {
+        // @ts-ignore
         config.$afterHook(url, params, options);
+        // @ts-ignore
         return config.$dataHook(data, url, params, options) || data;
       },
       error => {
+        // @ts-ignore
         config.$afterHook(url, params, options);
       }
     );
 }
 let request = request_fetch;
-
+// @ts-ignore
 request.config = config;
 
 export default request;

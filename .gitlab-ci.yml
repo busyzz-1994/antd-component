@@ -3,50 +3,28 @@ variables:
   AUTO_DEVOPS_DOMAIN: fintechgo.com
   # 不带标签的镜像仓库地址，用于推送镜像 （可以修改$CI_PROJECT_PATH_SLUG为你的项目名）
   CI_REGISTRY_IMAGE: harbor.bdfint.com/bd/$CI_PROJECT_PATH_SLUG
+  CI_REGISTRY_IMAGE_ALIYUN: registry.cn-beijing.aliyuncs.com/bdfint/${CI_PROJECT_PATH_SLUG}
+  CI_ALIYUN_STAGING_TRIGGER: trigger
+  CI_ALIYUN_PRODUCTION_TRIGGER: trigger
+  CI_ALIYUN_PRODUCTION_URL: example.com
 
 image: modules/kubectl
 
 stages:
-  - prepare
-  - compile
+  # - prepare
+  # - compile
   - build
-  - test
+  # - test
   - review
   - staging
   - production
   - cleanup
 
-cache:
-  paths:
-    - node_modules/
-
-# 安装依赖
-prepare:
-  stage: prepare
-  image: node:alpine
-  script:
-    - yarn --version
-    - yarn
-  only:
-    - branches
-# npm 打包
-compile:
-  stage: compile
-  image: node:alpine
-  script:
-    #    - yarn start
-    #    - yarn test
-    # 改为测试环境
-    - yarn build
-  only:
-    - branches
-  artifacts:
-    paths:
-      - build
-
 build:
   stage: build
-  image: docker
+  variables:
+    DOCKER_DRIVER: overlay
+  image: docker:stable
   services:
     - docker:dind
   script:
@@ -57,14 +35,15 @@ build:
 # 预览分支
 review:
   stage: review
-  variables:
-    BACKEND: https://secjy.zsteel.cc #10.82.12.63
   script:
     - deploy
   environment:
     name: review/$CI_COMMIT_REF_NAME
     url: http://$CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_SLUG.$AUTO_DEVOPS_DOMAIN
     on_stop: stop_review
+  artifacts:
+    paths:
+      - "*-deploy.yaml"
   only:
     refs:
       - branches
@@ -104,13 +83,14 @@ stop_review:
 
 staging:
   stage: staging
-  variables:
-    BACKEND: https://secjy.zsteel.cc
   script:
     - deploy
   environment:
     name: staging
     url: http://$CI_PROJECT_PATH_SLUG-staging.$AUTO_DEVOPS_DOMAIN
+  artifacts:
+    paths:
+      - "*-deploy.yaml"
   only:
     refs:
       - master
@@ -123,8 +103,6 @@ staging:
 
 production:
   stage: production
-  variables:
-    BACKEND: https://jy.zsteel.cc
   script:
     - deploy
   environment:
@@ -132,57 +110,75 @@ production:
     url: http://$CI_PROJECT_PATH_SLUG.$AUTO_DEVOPS_DOMAIN
   artifacts:
     paths:
-      - deployment.yaml
+      - "*-deploy.yaml"
   when: manual
   only:
     refs:
       - master
     kubernetes: active
 
+staging-aliyun:
+  stage: staging
+  variables:
+    DOCKER_DRIVER: overlay
+  image: docker:stable
+  services:
+    - docker:dind
+  script:
+    - docker login -u "$CI_REGISTRY_USER_ALIYUN" -p "$CI_REGISTRY_PASSWORD_ALIYUN" "$CI_REGISTRY_ALIYUN"
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA ${CI_REGISTRY_IMAGE_ALIYUN}:staging
+    - docker push ${CI_REGISTRY_IMAGE_ALIYUN}:staging
+    # trigger
+    - wget -O /dev/null -q '$CI_ALIYUN_STAGING_TRIGGER'
+  environment:
+    name: staging-aliyun
+    url: https://${CI_ALIYUN_PRODUCTION_URL}
+  when: manual
+  only:
+    refs:
+      - master
+    kubernetes: active
+
+production-aliyun:
+  stage: production
+  variables:
+    DOCKER_DRIVER: overlay
+  image: docker:stable
+  services:
+    - docker:dind
+  script:
+    - docker login -u "$CI_REGISTRY_USER_ALIYUN" -p "$CI_REGISTRY_PASSWORD_ALIYUN" "$CI_REGISTRY_ALIYUN"
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA ${CI_REGISTRY_IMAGE_ALIYUN}:prod
+    - docker push ${CI_REGISTRY_IMAGE_ALIYUN}:prod
+    # trigger
+    - wget -O /dev/null -q '$CI_ALIYUN_PRODUCTION_TRIGGER'
+  environment:
+    name: production-aliyun
+    url: https://${CI_ALIYUN_PRODUCTION_URL}
+  when: manual
+  only:
+    refs:
+      - master
+    kubernetes: active
 # ---------------------------------------------------------------------------
 
 .auto_devops: &auto_devops |
   [[ "$TRACE" ]] && set -x
-  export CI_APPLICATION_REPOSITORY=$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG
-  export CI_APPLICATION_TAG=$CI_COMMIT_SHA
-
   function deploy() {
-    create_kubeconfig
-    ensure_namespace
-    app="$CI_ENVIRONMENT_SLUG"
-    name="$CI_ENVIRONMENT_SLUG"
-    replicas="${REPLICAS-1}"
-    hostname=${CI_ENVIRONMENT_URL/http*:\/\//}
-
-    # export env for envsubst
-    export CI_KUBE_APP=$app
-    export CI_KUBE_NAME=$name
-    export CI_KUBE_ENV=${CI_ENVIRONMENT_NAME/\/*/}
-    export CI_KUBE_BACKEND=$BACKEND
-    export CI_KUBE_REPLICAS=$replicas
-    export CI_KUBE_HOSTNAME=$hostname
-    export CI_KUBE_IMAGE=$CI_APPLICATION_REPOSITORY:$CI_APPLICATION_TAG
-
-    echo "$CI_KUBE_NAME, $CI_KUBE_REPLICAS, $CI_KUBE_IMAGE, $CI_KUBE_HOSTNAME"
-
-    echo "正在创建 deployment.yaml ..."
-    # cat <<EOF | kubectl apply -n $KUBE_NAMESPACE --force -f -
-    # envsubst < deployment.yaml | kubectl apply -n $KUBE_NAMESPACE --force -f -
-    envsubst < .deployment.yaml > "deployment.yaml"
-    cat "deployment.yaml"
-
-    echo "正在部署..."
-    kubectl apply -n $KUBE_NAMESPACE --force -f "deployment.yaml"
-    # 取消阻塞 直接创建下一个服务
-    # kubectl rollout status -n "$KUBE_NAMESPACE" -w "deployment/$CI_KUBE_NAME"
-  }
-
-  function ensure_namespace() {
     kubectl describe namespace "$KUBE_NAMESPACE" || kubectl create namespace "$KUBE_NAMESPACE"
     # 在当前命名空间中生成 secret
-    kubectl describe secret harbor -n "$KUBE_NAMESPACE" || kubectl get secret harbor -o yaml -n bigdata | sed "s/bigdata/${KUBE_NAMESPACE}/g" | kubectl -n "$KUBE_NAMESPACE" create -f -
+    kubectl describe secret harbor -n "$KUBE_NAMESPACE" || kubectl get secret harbor -o yaml -n default | sed "s/default/${KUBE_NAMESPACE}/g" | kubectl -n "$KUBE_NAMESPACE" create -f -
+    # frontend
+    helm template helm \
+      --namespace="$KUBE_NAMESPACE" \
+      --name="$KUBE_NAMESPACE-$CI_COMMIT_REF_NAME" \
+      --set image.repository="$CI_REGISTRY_IMAGE" \
+      --set image.tag="$CI_COMMIT_SHA" \
+      --set ingress.hosts[0]="${CI_ENVIRONMENT_URL/http*:\/\//}" \
+      > frontend-deploy.yaml
+    cat frontend-deploy.yaml
+    kubectl apply --namespace="$KUBE_NAMESPACE"  -f frontend-deploy.yaml
   }
-
   function build() {
     if ! docker info &>/dev/null; then
       if [ -z "$DOCKER_HOST" -a "$KUBERNETES_PORT" ]; then
@@ -198,42 +194,21 @@ production:
     fi
 
     echo "正在发布到镜像仓库..."
-    export CI_KUBE_IMAGE=$CI_APPLICATION_REPOSITORY:$CI_APPLICATION_TAG
 
     if [[ -f Dockerfile ]]; then
-      echo "准备打包镜像 $CI_KUBE_IMAGE ..."
-      docker build -t "$CI_KUBE_IMAGE" .
-      echo "准备发布到镜像仓库 $CI_KUBE_IMAGE..."
-      docker push "$CI_KUBE_IMAGE"
-      docker rmi "$CI_KUBE_IMAGE"
+      # CACHE_FROM=$CI_REGISTRY_IMAGE/cache-from
+      IMAGE=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+      # docker pull $CACHE_FROM
+      # docker build --cache-from $CACHE_FROM --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA -t $IMAGE -t $CACHE_FROM .
+      docker build --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA -t $IMAGE .
+      docker push $IMAGE
+      # docker push $CACHE_FROM
     fi
-    echo ""
   }
-
   function delete() {
     echo "准备删除旧的部署..."
-    create_kubeconfig
-    name="$CI_ENVIRONMENT_SLUG"
 
-    kubectl delete all,ing -l "name=$name" -n "$KUBE_NAMESPACE"
-  }
-
-  create_kubeconfig() {
-    # [[ -z "$KUBE_URL" ]] && return
-
-    # echo "正在生成 kubeconfig..."
-    # export KUBECONFIG="$(pwd)/kubeconfig"
-    # export KUBE_CLUSTER_OPTIONS=
-    # if [[ -n "$KUBE_CA_PEM" ]]; then
-    #   echo "正在生成认证文件 $(pwd)/kube.ca.pem..."
-    #   echo "$KUBE_CA_PEM" > "$(pwd)/kube.ca.pem"
-    #   export KUBE_CLUSTER_OPTIONS=--certificate-authority="$(pwd)/kube.ca.pem"
-    # fi
-    # kubectl config set-cluster gitlab-deploy --server="$KUBE_URL" $KUBE_CLUSTER_OPTIONS
-    # kubectl config set-credentials gitlab-deploy --token="$KUBE_TOKEN" $KUBE_CLUSTER_OPTIONS
-    # kubectl config set-context gitlab-deploy --cluster=gitlab-deploy --user=gitlab-deploy --namespace="$KUBE_NAMESPACE"
-    # kubectl config use-context gitlab-deploy
-    echo "kubectl config"
+    kubectl delete --namespace="$KUBE_NAMESPACE"  -f frontend-deploy.yaml
   }
 
 before_script:
