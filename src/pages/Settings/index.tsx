@@ -11,12 +11,12 @@ import Settings from 'stores/Settings';
 interface SettingsProps extends RouteComponentProps {
   settings?: Settings; // injected
 }
-export default
-@inject('settings')
+
 // @ts-ignore
 @withRouter
+@inject('settings')
 @observer
-class extends Component<SettingsProps> {
+export default class extends Component<SettingsProps> {
   flush = () => {
     const { location, settings } = this.props;
 

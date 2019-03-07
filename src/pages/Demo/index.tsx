@@ -4,16 +4,17 @@
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import UserStore from 'stores/User';
+import User from 'stores/User';
 
 interface DemoProps extends RouteComponentProps {
-  user?: UserStore; // injected
+  user?: User; // injected
 }
 
-@inject('user')
+// @ts-ignore
 @withRouter
+@inject('user')
 @observer
-class Demo extends Component<DemoProps> {
+export default class Demo extends Component<DemoProps> {
   render() {
     let { user } = this.props;
     if (!user.loggedIn) {
@@ -28,5 +29,3 @@ class Demo extends Component<DemoProps> {
     );
   }
 }
-
-export default Demo;
