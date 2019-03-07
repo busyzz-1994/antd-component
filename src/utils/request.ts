@@ -125,7 +125,6 @@ function request_fetch(url, params, options: Option = {}) {
     );
 }
 let request = request_fetch;
-// @ts-ignore
-request.config = config;
 
+export { config };
 export default request;

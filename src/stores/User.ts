@@ -1,7 +1,7 @@
 /**
  * Created by Vincent on 2018/8/7.
  */
-import { observable, computed, flow } from 'mobx';
+import { computed, flow, observable } from 'mobx';
 // import api from 'api';
 
 export default class UserModel {

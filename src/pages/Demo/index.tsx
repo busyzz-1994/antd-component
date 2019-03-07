@@ -3,10 +3,10 @@
  */
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
-import { RouterProps, withRouter } from 'react-router-dom';
-import UserStore from 'stores/UserStore';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import UserStore from 'stores/User';
 
-interface DemoProps extends RouterProps {
+interface DemoProps extends RouteComponentProps {
   user?: UserStore; // injected
 }
 
