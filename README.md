@@ -6,7 +6,6 @@
 
 ## 包含功能
 
-- react-scripts
 - mobx
 - react-router
 - typescript
@@ -27,15 +26,29 @@ dev
 yarn start
 ```
 
-production
+单元测试（Unit Test）
 
 ```sh
-yarn build
+yarn test
+```
 
-serve ./build
+集成测试（Integration Test）
+
+这部分测试代码可以考虑适当交给测试人员编写，需要学习 
+[expect-puppeteer](https://github.com/smooth-code/jest-puppeteer/blob/master/packages/expect-puppeteer/README.md#api)
+或 
+[puppeteer page](https://pptr.dev/#?product=Puppeteer&version=master&show=api-class-page)
+
+```sh
+yarn test:integration
 ```
 
 ### 开发设置
 
-1. setupProxy.js 修改后端代理
-1. 运行时修改后端 apiServer http://localhost:3000//settings?apiServer=https://trade.zsteel.cc
+* `setupProxy.js` 修改后端代理
+* 运行时修改后端 `apiServer` http://localhost:3000//settings?apiServer=https://api.bdfint.cn
+
+### 已知问题
+
+* 一些库和功能在使用 `TypeScript` 时出现类型冲突，如 `@withRouter`
+* 
