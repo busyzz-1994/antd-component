@@ -23,14 +23,19 @@ IE 9+
 
 dev
 
-```
-$ yarn start
+```sh
+yarn start
 ```
 
 production
 
-```
-$ yarn build
+```sh
+yarn build
 
-$ serve ./build
+serve ./build
 ```
+
+### 开发设置
+
+1. setupProxy.js 修改后端代理
+1. 运行时修改后端 apiServer http://localhost:3000//settings?apiServer=https://trade.zsteel.cc
