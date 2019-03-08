@@ -79,7 +79,7 @@ review-dev:
     - deploy
   environment:
     name: review/$CI_COMMIT_REF_NAME
-    url: http://${PROJECT_URL_PREFIX}-${CI_COMMIT_REF_SLUG}.dev.${AUTO_DEVOPS_DOMAIN}
+    url: http://${PROJECT_URL_PREFIX}.dev.${AUTO_DEVOPS_DOMAIN}
     on_stop: stop_review
   artifacts:
     paths:
@@ -99,7 +99,7 @@ review-test:
     - deploy
   environment:
     name: test
-    url: http://${PROJECT_URL_PREFIX}-${CI_ENVIRONMENT_SLUG}.test.${AUTO_DEVOPS_DOMAIN}
+    url: http://${PROJECT_URL_PREFIX}.test.${AUTO_DEVOPS_DOMAIN}
   artifacts:
     paths:
       - "*.yaml"
