@@ -78,7 +78,7 @@ review-dev:
   script:
     - deploy
   environment:
-    name: review/$CI_COMMIT_REF_NAME
+    name: dev
     url: http://${PROJECT_URL_PREFIX}.dev.${AUTO_DEVOPS_DOMAIN}
     on_stop: stop_review
   artifacts:
@@ -86,10 +86,8 @@ review-dev:
       - "*.yaml"
   only:
     refs:
-      - branches
+      - dev
     kubernetes: active
-  except:
-    - master
 
 review-test:
   stage: review
