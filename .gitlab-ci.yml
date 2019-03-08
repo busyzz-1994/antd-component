@@ -80,7 +80,6 @@ review-dev:
   environment:
     name: dev
     url: http://${PROJECT_URL_PREFIX}.dev.${AUTO_DEVOPS_DOMAIN}
-    on_stop: stop_review
   artifacts:
     paths:
       - "*.yaml"
