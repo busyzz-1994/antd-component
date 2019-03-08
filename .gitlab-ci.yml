@@ -1,22 +1,18 @@
 variables:
   # 用于预览的域名
-  AUTO_DEVOPS_DOMAIN: fintechgo.com
+  AUTO_DEVOPS_DOMAIN: bdfint.cn
   # 不带标签的镜像仓库地址，用于推送镜像 （可以修改$CI_PROJECT_PATH_SLUG为你的项目名）
-  CI_REGISTRY_IMAGE: harbor.bdfint.com/bd/$CI_PROJECT_PATH_SLUG
-  CI_REGISTRY_IMAGE_ALIYUN: registry.cn-beijing.aliyuncs.com/bdfint/${CI_PROJECT_PATH_SLUG}
-  CI_ALIYUN_STAGING_TRIGGER: trigger
-  CI_ALIYUN_PRODUCTION_TRIGGER: trigger
-  CI_ALIYUN_PRODUCTION_URL: example.com
+  CI_REGISTRY_IMAGE: ${GIT_REGISTRY_URL}/${GIT_REGISTRY_PROJECT}/${CI_PROJECT_PATH_SLUG}
+
+  # fin.bdfint.cn
+  PROJECT_URL_PREFIX: react-boilerplate
+  PROJECT_GROUP_NAME: react-boilerplate
 
 image: modules/kubectl
 
 stages:
-  # - prepare
-  # - compile
   - build
-  # - test
   - review
-  - staging
   - production
   - cleanup
 
@@ -35,20 +31,23 @@ build:
 # 预览分支
 review:
   stage: review
+  variables:
+    KUBE_NAMESPACE: dev-${PROJECT_GROUP_NAME}
   script:
     - deploy
   environment:
     name: review/$CI_COMMIT_REF_NAME
-    url: http://$CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_SLUG.$AUTO_DEVOPS_DOMAIN
+    url: http://${PROJECT_URL_PREFIX}-${CI_COMMIT_REF_SLUG}.review.${AUTO_DEVOPS_DOMAIN}
     on_stop: stop_review
   artifacts:
     paths:
-      - "*-deploy.yaml"
+      - "*.yaml"
   only:
     refs:
       - branches
     kubernetes: active
   except:
+    - dev
     - master
 
 # 停止预览
@@ -56,6 +55,7 @@ stop_review:
   stage: cleanup
   variables:
     GIT_STRATEGY: none
+    KUBE_NAMESPACE: dev-${PROJECT_GROUP_NAME}
   script:
     - delete
   environment:
@@ -68,93 +68,65 @@ stop_review:
       - branches
     kubernetes: active
   except:
+    - dev
     - master
 
-# Keys that start with a dot (.) will not be processed by GitLab CI.
-# Staging and canary jobs are disabled by default, to enable them
-# remove the dot (.) before the job name.
-# https://docs.gitlab.com/ee/ci/yaml/README.html#hidden-keys
-
-# Staging deploys are disabled by default since
-# continuous deployment to production is enabled by default
-# If you prefer to automatically deploy to staging and
-# only manually promote to production, enable this job by removing the dot (.),
-# and uncomment the `when: manual` line in the `production` job.
-
-staging:
-  stage: staging
+review-dev:
+  stage: review
+  variables:
+    KUBE_NAMESPACE: dev-${PROJECT_GROUP_NAME}
   script:
     - deploy
   environment:
-    name: staging
-    url: http://$CI_PROJECT_PATH_SLUG-staging.$AUTO_DEVOPS_DOMAIN
+    name: review/$CI_COMMIT_REF_NAME
+    url: http://${PROJECT_URL_PREFIX}-${CI_COMMIT_REF_SLUG}.dev.${AUTO_DEVOPS_DOMAIN}
+    on_stop: stop_review
   artifacts:
     paths:
-      - "*-deploy.yaml"
+      - "*.yaml"
+  only:
+    refs:
+      - branches
+    kubernetes: active
+  except:
+    - master
+
+review-test:
+  stage: review
+  variables:
+    KUBE_NAMESPACE: test-${PROJECT_GROUP_NAME}
+  script:
+    - deploy
+  environment:
+    name: test
+    url: http://${PROJECT_URL_PREFIX}-${CI_ENVIRONMENT_SLUG}.test.${AUTO_DEVOPS_DOMAIN}
+  artifacts:
+    paths:
+      - "*.yaml"
+  # when: manual
   only:
     refs:
       - master
     kubernetes: active
 
-# This job continuously deploys to production on every push to `master`.
-# To make this a manual process, either because you're enabling `staging`
-# or `canary` deploys, or you simply want more control over when you deploy
-# to production, uncomment the `when: manual` line in the `production` job.
-
+# 阿里云
 production:
   stage: production
+  variables:
+    DOCKER_DRIVER: overlay
+  image: docker:stable
+  services:
+    - docker:dind
   script:
-    - deploy
+    echo 'production'
+    # - docker login -u "$CI_REGISTRY_USER_ALIYUN" -p "$CI_REGISTRY_PASSWORD_ALIYUN" "$GIT_REGISTRY_ALIYUN"
+    # - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA ${CI_REGISTRY_IMAGE_ALIYUN}:prod
+    # - docker push ${CI_REGISTRY_IMAGE_ALIYUN}:prod
+    # trigger
+    # - wget -O /dev/null -q '$CI_ALIYUN_PRODUCTION_TRIGGER'
   environment:
     name: production
-    url: http://$CI_PROJECT_PATH_SLUG.$AUTO_DEVOPS_DOMAIN
-  artifacts:
-    paths:
-      - "*-deploy.yaml"
-  when: manual
-  only:
-    refs:
-      - master
-    kubernetes: active
-
-staging-aliyun:
-  stage: staging
-  variables:
-    DOCKER_DRIVER: overlay
-  image: docker:stable
-  services:
-    - docker:dind
-  script:
-    - docker login -u "$CI_REGISTRY_USER_ALIYUN" -p "$CI_REGISTRY_PASSWORD_ALIYUN" "$CI_REGISTRY_ALIYUN"
-    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA ${CI_REGISTRY_IMAGE_ALIYUN}:staging
-    - docker push ${CI_REGISTRY_IMAGE_ALIYUN}:staging
-    # trigger
-    - wget -O /dev/null -q '$CI_ALIYUN_STAGING_TRIGGER'
-  environment:
-    name: staging-aliyun
-    url: https://${CI_ALIYUN_PRODUCTION_URL}
-  when: manual
-  only:
-    refs:
-      - master
-    kubernetes: active
-
-production-aliyun:
-  stage: production
-  variables:
-    DOCKER_DRIVER: overlay
-  image: docker:stable
-  services:
-    - docker:dind
-  script:
-    - docker login -u "$CI_REGISTRY_USER_ALIYUN" -p "$CI_REGISTRY_PASSWORD_ALIYUN" "$CI_REGISTRY_ALIYUN"
-    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA ${CI_REGISTRY_IMAGE_ALIYUN}:prod
-    - docker push ${CI_REGISTRY_IMAGE_ALIYUN}:prod
-    # trigger
-    - wget -O /dev/null -q '$CI_ALIYUN_PRODUCTION_TRIGGER'
-  environment:
-    name: production-aliyun
-    url: https://${CI_ALIYUN_PRODUCTION_URL}
+    url: https://${PROJECT_URL_PREFIX}.zsteel.cc
   when: manual
   only:
     refs:
@@ -167,11 +139,11 @@ production-aliyun:
   function deploy() {
     kubectl describe namespace "$KUBE_NAMESPACE" || kubectl create namespace "$KUBE_NAMESPACE"
     # 在当前命名空间中生成 secret
-    kubectl describe secret harbor -n "$KUBE_NAMESPACE" || kubectl get secret harbor -o yaml -n default | sed "s/default/${KUBE_NAMESPACE}/g" | kubectl -n "$KUBE_NAMESPACE" create -f -
+    kubectl describe secret bdfint -n "$KUBE_NAMESPACE" || kubectl get secret bdfint -o yaml -n default | sed "s/default/${KUBE_NAMESPACE}/g" | kubectl -n "$KUBE_NAMESPACE" create -f -
     # frontend
     helm template helm \
       --namespace="$KUBE_NAMESPACE" \
-      --name="$KUBE_NAMESPACE-$CI_COMMIT_REF_NAME" \
+      --name="$CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_SLUG" \
       --set image.repository="$CI_REGISTRY_IMAGE" \
       --set image.tag="$CI_COMMIT_SHA" \
       --set ingress.hosts[0]="${CI_ENVIRONMENT_URL/http*:\/\//}" \
@@ -190,24 +162,15 @@ production-aliyun:
     if [[ -n "$CI_REGISTRY_USER" ]]; then
       echo "Logging to GitLab Container Registry with CI credentials..."
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-      echo ""
     fi
 
-    echo "正在发布到镜像仓库..."
-
     if [[ -f Dockerfile ]]; then
-      # CACHE_FROM=$CI_REGISTRY_IMAGE/cache-from
-      IMAGE=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
-      # docker pull $CACHE_FROM
-      # docker build --cache-from $CACHE_FROM --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA -t $IMAGE -t $CACHE_FROM .
-      docker build --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA -t $IMAGE .
-      docker push $IMAGE
-      # docker push $CACHE_FROM
+      docker build --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
+      docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
     fi
   }
   function delete() {
     echo "准备删除旧的部署..."
-
     kubectl delete --namespace="$KUBE_NAMESPACE"  -f frontend-deploy.yaml
   }
 
