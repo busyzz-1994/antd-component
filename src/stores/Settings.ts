@@ -1,7 +1,7 @@
 /**
  * 一些开发过程中的设置，可以在 http://localhost:3000//settings 中查看和设置
  */
-import { debounce } from 'lodash-es';
+import debounce from 'lodash/debounce';
 import { observable, observe, toJS } from 'mobx';
 import localStorage from 'utils/localStorage';
 

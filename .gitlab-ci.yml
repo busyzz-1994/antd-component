@@ -2,7 +2,7 @@ variables:
   # 用于预览的域名
   AUTO_DEVOPS_DOMAIN: bdfint.cn
   # 不带标签的镜像仓库地址，用于推送镜像 （可以修改$CI_PROJECT_PATH_SLUG为你的项目名）
-  CI_REGISTRY_IMAGE: ${GIT_REGISTRY_URL}/${GIT_REGISTRY_PROJECT}/${CI_PROJECT_PATH_SLUG}
+  CI_REGISTRY_IMAGE: ${CI_REGISTRY}/${CI_REGISTRY_USER}/${CI_PROJECT_PATH_SLUG}
 
   # fin.bdfint.cn
   PROJECT_URL_PREFIX: react-boilerplate
@@ -119,7 +119,7 @@ production:
     - docker:dind
   script:
     echo 'production'
-    # - docker login -u "$CI_REGISTRY_USER_ALIYUN" -p "$CI_REGISTRY_PASSWORD_ALIYUN" "$GIT_REGISTRY_ALIYUN"
+    # - docker login -u "$CI_REGISTRY_USER_ALIYUN" -p "$CI_REGISTRY_PASSWORD_ALIYUN" "$CI_REGISTRY_ALIYUN"
     # - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA ${CI_REGISTRY_IMAGE_ALIYUN}:prod
     # - docker push ${CI_REGISTRY_IMAGE_ALIYUN}:prod
     # trigger
