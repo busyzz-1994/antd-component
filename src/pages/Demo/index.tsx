@@ -8,6 +8,7 @@ import React, { Component, Fragment } from 'react';
 import { Helmet } from 'react-helmet';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import User from 'stores/User';
+import styles from './index.module.scss';
 
 interface DemoProps extends RouteComponentProps {
   user?: User; // injected
@@ -27,23 +28,24 @@ export default class Demo extends Component<DemoProps> {
           <title>{language.demo.title}</title>
           <meta name="description" content={language.demo.description} />
         </Helmet>
-        <h1>{language.demo.heading}</h1>
-        {user.loggedIn ? (
-          <span>
-            {user.info.name}-{user.info.age}
-          </span>
-        ) : (
-          <button onClick={() => user.login('admin', '123456')}>login</button>
-        )}
         <Container
+          className={styles.container}
           width={200}
           height={200}
+          color="white"
           backgroundColor="red"
           smBackgroundColor="green"
           mdBackgroundColor="blue"
           lgBackgroundColor="purple"
         >
-          Container
+          <h1>{language.demo.heading}</h1>
+          {user.loggedIn ? (
+            <span>
+              {user.info.name}-{user.info.age}
+            </span>
+          ) : (
+            <button onClick={() => user.login('admin', '123456')}>login</button>
+          )}
         </Container>
       </Fragment>
     );
