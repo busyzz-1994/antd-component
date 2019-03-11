@@ -1,7 +1,10 @@
 /**
  * Created by Vincent on 2018/8/6.
  */
+import { Text } from 'box-react';
 import Container from 'components/Container';
+import Iconfont from 'components/Iconfont';
+import Image from 'components/Image';
 import language from 'language';
 import { inject, observer } from 'mobx-react';
 import React, { Component, Fragment } from 'react';
@@ -30,15 +33,29 @@ export default class Demo extends Component<DemoProps> {
         </Helmet>
         <Container
           className={styles.container}
-          width={200}
-          height={200}
           color="white"
           backgroundColor="red"
           smBackgroundColor="green"
           mdBackgroundColor="blue"
           lgBackgroundColor="purple"
         >
-          <h1>{language.demo.heading}</h1>
+          <Image
+            contain
+            src={require('./images/logo.png')}
+            webp={require('./images/logo.webp')}
+            width={320}
+            height={120}
+            backgroundColor="white"
+          />
+          <Iconfont color="black" />
+          <Text size="xxl">{language.demo.heading}</Text>
+          <Text size="xl">{language.demo.heading}</Text>
+          <Text size="lg">{language.demo.heading}</Text>
+          <Text size="md">{language.demo.heading}</Text>
+          <Text size="sm">{language.demo.heading}</Text>
+          <Text size="xs">{language.demo.heading}</Text>
+          <Text size="xxs">{language.demo.heading}</Text>
+
           {user.loggedIn ? (
             <span>
               {user.info.name}-{user.info.age}

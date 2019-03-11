@@ -1984,10 +1984,10 @@ boolbase@^1.0.0, boolbase@~1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
-box-react@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/box-react/-/box-react-1.0.4.tgz#cc4fdc42e01584718ab4756d5573ca5ef2b09841"
-  integrity sha512-GLYLUdj8IGtiXX2B86uNzYfrimA1eUBcHRpLsBh5UpjIBn8uoYD+kj29nIMlDJv4shy5igMhvhULDuxIR0mfeg==
+box-react@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/box-react/-/box-react-1.1.0.tgz#1a70a4ffd9c5f02ecb3a600de4a28cfb8462fb2e"
+  integrity sha512-OyI8AnR0UTWTCfHjpROIfvTzTJJoA9J1ZOy47XJrPlgUdIjhpF6MqVlVuqJBEH/9ffpO3OAvUmWS+SmVTx0XQA==
   dependencies:
     "@emotion/is-prop-valid" "^0.7.3"
     "@types/react" "^16.7.17"
