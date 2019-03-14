@@ -1,5 +1,5 @@
 # build environment
-FROM node:slim as builder
+FROM node:alpine as builder
 
 WORKDIR /usr/src/app
 ENV PATH ./node_modules/.bin:$PATH
