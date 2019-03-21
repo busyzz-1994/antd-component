@@ -1,12 +1,24 @@
 variables:
-  # 用于预览的域名
+  # 开发测试环境域名
   AUTO_DEVOPS_DOMAIN: bdfint.cn
+  # 生产环境域名
+  AUTO_DEVOPS_DOMAIN_ALIYUN: zsteel.cc
   # 不带标签的镜像仓库地址，用于推送镜像 （可以修改$CI_PROJECT_PATH_SLUG为你的项目名）
   CI_REGISTRY_IMAGE: ${CI_REGISTRY}/fed/${CI_PROJECT_PATH_SLUG}
+  CI_REGISTRY_IMAGE_ALIYUN: ${CI_REGISTRY_ALIYUN}/bdfint/react-boilerplate
 
-  # fin.bdfint.cn
+  # *.dev.bdfint.cn *.test.bdfint.cn
   PROJECT_URL_PREFIX: react-boilerplate
   PROJECT_GROUP_NAME: react-boilerplate
+
+  # 项目组/项目变量 (Settings -> CI/CD -> Variables)
+  # CI_REGISTRY 本地 docker 仓库
+  # CI_REGISTRY_USER
+  # CI_REGISTRY_PASSWORD
+  # CI_REGISTRY_ALIYUN 阿里云 docker 仓库
+  # CI_REGISTRY_USER_ALIYUN
+  # CI_REGISTRY_PASSWORD_ALIYUN
+  # CI_REGISTRY_TRIGGER_ALIYUN 项目阿里云发布触发地址 [项目唯一]
 
 image: modules/kubectl
 
@@ -115,15 +127,15 @@ production:
   services:
     - docker:dind
   script:
-    echo 'production'
-    # - docker login -u "$CI_REGISTRY_USER_ALIYUN" -p "$CI_REGISTRY_PASSWORD_ALIYUN" "$CI_REGISTRY_ALIYUN"
-    # - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA ${CI_REGISTRY_IMAGE_ALIYUN}:prod
-    # - docker push ${CI_REGISTRY_IMAGE_ALIYUN}:prod
+    # 推送镜像到阿里云
+    - docker login -u "$CI_REGISTRY_USER_ALIYUN" -p "$CI_REGISTRY_PASSWORD_ALIYUN" "$CI_REGISTRY_ALIYUN"
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA ${CI_REGISTRY_IMAGE_ALIYUN}:prod
+    - docker push ${CI_REGISTRY_IMAGE_ALIYUN}:prod
     # trigger
-    # - wget -O /dev/null -q '$CI_ALIYUN_PRODUCTION_TRIGGER'
+    - wget -O /dev/null -q '$CI_REGISTRY_TRIGGER_ALIYUN'
   environment:
     name: production
-    url: https://${PROJECT_URL_PREFIX}.zsteel.cc
+    url: https://${PROJECT_URL_PREFIX}.${AUTO_DEVOPS_DOMAIN_ALIYUN}
   when: manual
   only:
     refs:
