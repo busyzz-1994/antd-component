@@ -33,8 +33,6 @@ build:
   variables:
     DOCKER_DRIVER: overlay
   image: docker:stable
-  services:
-    - docker:dind
   script:
     - build
   only:
@@ -124,8 +122,6 @@ production:
   variables:
     DOCKER_DRIVER: overlay
   image: docker:stable
-  services:
-    - docker:dind
   script:
     # 推送镜像到阿里云
     - docker login -u "$CI_REGISTRY_USER_ALIYUN" -p "$CI_REGISTRY_PASSWORD_ALIYUN" "$CI_REGISTRY_ALIYUN"
@@ -161,13 +157,6 @@ production:
     kubectl apply --namespace="$KUBE_NAMESPACE"  -f frontend-deploy.yaml
   }
   function build() {
-    if ! docker info &>/dev/null; then
-      if [ -z "$DOCKER_HOST" -a "$KUBERNETES_PORT" ]; then
-        echo '设置 DOCKER_HOST=tcp://localhost:2375'
-        export DOCKER_HOST='tcp://localhost:2375'
-      fi
-    fi
-
     if [[ -n "$CI_REGISTRY_USER" ]]; then
       echo "Logging to GitLab Container Registry with CI credentials..."
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
