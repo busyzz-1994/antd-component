@@ -145,3 +145,14 @@ Exclude<keyof FormProps, 'onReset' | 'onSubmit'>
 ```
 
 * 一些库和功能在使用 `TypeScript` 时出现类型冲突，如 `@withRouter`
+
+* node-sass 依赖环境
+
+https://github.com/sass/node-sass/releases
+
+| NodeJS  | Minimum node-sass version | Node Module |
+| ------- | ------------------------- | ----------- |
+| Node 12 | 4.12+                     | 72          |
+| Node 11 | 4.10+                     | 67          |
+| Node 10 | 4.9+                      | 64          |
+| Node 8  | 4.5.3+                    | 57          |
