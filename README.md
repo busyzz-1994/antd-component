@@ -51,8 +51,8 @@ yarn test:integration
 
 ### 开发设置
 
-* `setupProxy.js` 修改后端代理
-* 运行时修改后端 `apiServer` http://localhost:3000//settings?apiServer=https://api.bdfint.cn
+- `setupProxy.js` 修改后端代理
+- 运行时修改后端 `apiServer` http://localhost:3000//settings?apiServer=https://api.bdfint.cn
 
 ### 项目结构
 
@@ -138,17 +138,17 @@ Project
 
 ### 已知问题
 
-* `ESLint` 对 `TypeScript` 语法支持不完善 `keyof` 会报错
+- `ESLint` 对 `TypeScript` 语法支持不完善 `keyof` 会报错
 
 ```js
 Exclude<keyof FormProps, 'onReset' | 'onSubmit'>
 ```
 
-* 一些库和功能在使用 `TypeScript` 时出现类型冲突，如 `@withRouter`
+- 一些库和功能在使用 `TypeScript` 时出现类型冲突，如 `@withRouter`
 
-* node-sass 依赖环境
+- node-sass 依赖环境
 
-https://github.com/sass/node-sass/releases
+<https://github.com/sass/node-sass/releases>
 
 | NodeJS  | Minimum node-sass version | Node Module |
 | ------- | ------------------------- | ----------- |
