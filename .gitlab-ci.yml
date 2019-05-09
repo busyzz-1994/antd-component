@@ -39,50 +39,8 @@ build:
   only:
     - branches
 
-# 预览分支
-review:
-  stage: review
-  variables:
-    KUBE_NAMESPACE: dev-${PROJECT_GROUP_NAME}
-  script:
-    - deploy
-  environment:
-    name: review/$CI_COMMIT_REF_NAME
-    url: http://${PROJECT_URL_PREFIX}-${CI_COMMIT_REF_SLUG}.review.${AUTO_DEVOPS_DOMAIN}
-    on_stop: stop_review
-  artifacts:
-    paths:
-      - "*.yaml"
-  only:
-    refs:
-      - branches
-    kubernetes: active
-  except:
-    - dev
-    - master
-
-# 停止预览
-stop_review:
-  stage: cleanup
-  variables:
-    GIT_STRATEGY: none
-    KUBE_NAMESPACE: dev-${PROJECT_GROUP_NAME}
-  script:
-    - delete
-  environment:
-    name: review/$CI_COMMIT_REF_NAME
-    action: stop
-  when: manual
-  allow_failure: true
-  only:
-    refs:
-      - branches
-    kubernetes: active
-  except:
-    - dev
-    - master
-
-review-dev:
+# 预览 dev
+review_dev:
   stage: review
   variables:
     KUBE_NAMESPACE: dev-${PROJECT_GROUP_NAME}
@@ -98,8 +56,8 @@ review-dev:
     refs:
       - dev
     kubernetes: active
-
-review-test:
+# 预览 test
+review_test:
   stage: review
   variables:
     KUBE_NAMESPACE: test-${PROJECT_GROUP_NAME}
@@ -112,6 +70,41 @@ review-test:
     paths:
       - "*.yaml"
   # when: manual
+  only:
+    refs:
+      - master
+    kubernetes: active
+
+# 停止预览 dev
+stop_review_dev:
+  stage: cleanup
+  variables:
+    GIT_STRATEGY: none
+    KUBE_NAMESPACE: dev-${PROJECT_GROUP_NAME}
+  script:
+    - delete
+  environment:
+    name: dev
+    action: stop
+  when: manual
+  allow_failure: true
+  only:
+    refs:
+      - dev
+    kubernetes: active
+# 停止预览 test
+stop_review_test:
+  stage: cleanup
+  variables:
+    GIT_STRATEGY: none
+    KUBE_NAMESPACE: dev-${PROJECT_GROUP_NAME}
+  script:
+    - delete
+  environment:
+    name: test
+    action: stop
+  when: manual
+  allow_failure: true
   only:
     refs:
       - master
