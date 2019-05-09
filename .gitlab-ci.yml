@@ -90,7 +90,7 @@ review-dev:
     - deploy
   environment:
     name: dev
-    url: http://${PROJECT_URL_PREFIX}.dev.${AUTO_DEVOPS_DOMAIN}
+    url: http://${PROJECT_URL_PREFIX}.stable-dev.${AUTO_DEVOPS_DOMAIN}
   artifacts:
     paths:
       - "*.yaml"
@@ -107,7 +107,7 @@ review-test:
     - deploy
   environment:
     name: test
-    url: http://${PROJECT_URL_PREFIX}.test.${AUTO_DEVOPS_DOMAIN}
+    url: http://${PROJECT_URL_PREFIX}.stable-test.${AUTO_DEVOPS_DOMAIN}
   artifacts:
     paths:
       - "*.yaml"
