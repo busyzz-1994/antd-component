@@ -56,6 +56,7 @@ review_dev:
     refs:
       - dev
     kubernetes: active
+
 # 预览 test
 review_test:
   stage: review
@@ -92,12 +93,13 @@ stop_review_dev:
     refs:
       - dev
     kubernetes: active
+
 # 停止预览 test
 stop_review_test:
   stage: cleanup
   variables:
     GIT_STRATEGY: none
-    KUBE_NAMESPACE: dev-${PROJECT_GROUP_NAME}
+    KUBE_NAMESPACE: test-${PROJECT_GROUP_NAME}
   script:
     - delete
   environment:
