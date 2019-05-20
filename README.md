@@ -2,11 +2,11 @@
 
 大数金科项目前端初始化模版
 
-| 环境       | 地址                                     | 发布规则              |
-| ---------- | ---------------------------------------- | --------------------- |
-| dev        | http://react-boilerplate.dev.bdfint.cn/  | `dev` 分支自动发布    |
-| test       | http://react-boilerplate.test.bdfint.cn/ | `master` 分支自动发布 |
-| production | https://react-boilerplate.zsteel.cc/     | **手动发布**          |
+| 环境       | 地址                                            | 发布规则              |
+| ---------- | ----------------------------------------------- | --------------------- |
+| dev        | http://react-boilerplate.stable-dev.bdfint.cn/  | `dev` 分支自动发布    |
+| test       | http://react-boilerplate.stable-test.bdfint.cn/ | `master` 分支自动发布 |
+| production | https://react-boilerplate.zsteel.cc/            | **手动发布**          |
 
 ## 说明
 
