@@ -7,7 +7,7 @@ variables:
   CI_REGISTRY_IMAGE: ${CI_REGISTRY}/fed/${CI_PROJECT_PATH_SLUG}
   CI_REGISTRY_IMAGE_ALIYUN: ${CI_REGISTRY_ALIYUN}/bdfint/react-boilerplate
 
-  # 项目的域名名称前缀 *.dev.bdfint.cn *.test.bdfint.cn *.zsteel.cc
+  # 项目的域名名称前缀 *.stable-dev.bdfint.cn *.stable-test.bdfint.cn *.zsteel.cc
   PROJECT_URL_PREFIX: react-boilerplate
   # 项目组的英文名称（方便查看和调试等）
   PROJECT_GROUP_NAME: fed
