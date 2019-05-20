@@ -121,6 +121,7 @@ production:
     DOCKER_DRIVER: overlay
   image: docker:stable
   script:
+    - pull
     # 推送镜像到阿里云
     - docker login -u "$CI_REGISTRY_USER_ALIYUN" -p "$CI_REGISTRY_PASSWORD_ALIYUN" "$CI_REGISTRY_ALIYUN"
     - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA ${CI_REGISTRY_IMAGE_ALIYUN}:prod
@@ -168,6 +169,14 @@ production:
   function delete() {
     echo "准备删除旧的部署..."
     kubectl delete --namespace="$KUBE_NAMESPACE"  -f deployment.yaml
+  }
+  function pull() {
+    if [[ -n "$CI_REGISTRY_USER" ]]; then
+      echo "Logging to GitLab Container Registry with CI credentials..."
+      docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    fi
+
+    docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
   }
 
 before_script:
