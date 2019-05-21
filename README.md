@@ -2,6 +2,15 @@
 
 大数金科项目前端初始化模版
 
+## 用法
+
+```shell
+git clone git@gitlab.bdfint.com:fed/templates/react-boilerplate.git --depth=1
+cd react-boilerplate
+yarn install
+yarn start # 打开浏览器访问 http://localhost:3000
+```
+
 | 环境       | 地址                                            | 发布规则              |
 | ---------- | ----------------------------------------------- | --------------------- |
 | dev        | http://react-boilerplate.stable-dev.bdfint.cn/  | `dev` 分支自动发布    |
