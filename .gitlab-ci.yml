@@ -46,7 +46,6 @@ build:
 review_dev:
   stage: review
   variables:
-    GIT_STRATEGY: none
     KUBE_NAMESPACE: dev-${PROJECT_GROUP_NAME}
     REPOSITORY: $CI_REGISTRY_IMAGE
   script:
@@ -67,7 +66,6 @@ review_dev:
 review_test:
   stage: review
   variables:
-    GIT_STRATEGY: none
     KUBE_NAMESPACE: test-${PROJECT_GROUP_NAME}
     REPOSITORY: $CI_REGISTRY_IMAGE
   script:
@@ -124,7 +122,6 @@ stop_review_test:
 staging:
   stage: staging
   variables:
-    GIT_STRATEGY: none
     KUBE_NAMESPACE: staging-${PROJECT_GROUP_NAME}
     REPOSITORY: $CI_REGISTRY_IMAGE_ALIYUN
     KUBE_CONFIG: $KUBE_CONFIG_ALIYUN
@@ -149,7 +146,6 @@ staging:
 production:
   stage: production
   variables:
-    GIT_STRATEGY: none
     KUBE_NAMESPACE: $PROJECT_GROUP_NAME
     REPOSITORY: $CI_REGISTRY_IMAGE_ALIYUN
     KUBE_CONFIG: $KUBE_CONFIG_ALIYUN
