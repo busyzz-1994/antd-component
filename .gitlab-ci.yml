@@ -21,11 +21,12 @@ variables:
   # CI_REGISTRY_PASSWORD_ALIYUN
   # CI_REGISTRY_TRIGGER_ALIYUN 项目阿里云发布触发地址 [项目唯一]
 
-image: modules/kubectl
+image: modules/kubectl:docker
 
 stages:
   - build
   - review
+  - staging
   - production
   - cleanup
 
@@ -37,13 +38,17 @@ build:
   script:
     - build
   only:
-    - branches
+    refs:
+      - dev
+      - master
 
 # 预览 dev
 review_dev:
   stage: review
   variables:
+    GIT_STRATEGY: none
     KUBE_NAMESPACE: dev-${PROJECT_GROUP_NAME}
+    REPOSITORY: $CI_REGISTRY_IMAGE
   script:
     - deploy
   environment:
@@ -62,7 +67,9 @@ review_dev:
 review_test:
   stage: review
   variables:
+    GIT_STRATEGY: none
     KUBE_NAMESPACE: test-${PROJECT_GROUP_NAME}
+    REPOSITORY: $CI_REGISTRY_IMAGE
   script:
     - deploy
   environment:
@@ -72,7 +79,6 @@ review_test:
   artifacts:
     paths:
       - "*.yaml"
-  # when: manual
   only:
     refs:
       - master
@@ -114,47 +120,60 @@ stop_review_test:
       - master
     kubernetes: active
 
-# 阿里云
-production:
-  stage: production
+# 阿里云灰度
+staging:
+  stage: staging
   variables:
-    DOCKER_DRIVER: overlay
-  image: docker:stable
+    GIT_STRATEGY: none
+    KUBE_NAMESPACE: staging-${PROJECT_GROUP_NAME}
+    REPOSITORY: $CI_REGISTRY_IMAGE_ALIYUN
+    KUBE_CONFIG: $KUBE_CONFIG_ALIYUN
   script:
-    - pull
     # 推送镜像到阿里云
-    - docker login -u "$CI_REGISTRY_USER_ALIYUN" -p "$CI_REGISTRY_PASSWORD_ALIYUN" "$CI_REGISTRY_ALIYUN"
-    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA ${CI_REGISTRY_IMAGE_ALIYUN}:prod
-    - docker push ${CI_REGISTRY_IMAGE_ALIYUN}:prod
-    # trigger
-    - wget -O /dev/null -q '$CI_REGISTRY_TRIGGER_ALIYUN'
+    - docker_aliyun
+    - kubectl_aliyun
+    - deploy
   environment:
-    name: production
+    name: staging
     url: https://${PROJECT_URL_PREFIX}.${AUTO_DEVOPS_DOMAIN_ALIYUN}
+  artifacts:
+    paths:
+      - "*.yaml"
   when: manual
   only:
     refs:
       - master
     kubernetes: active
+
+# 阿里云生产
+production:
+  stage: production
+  variables:
+    GIT_STRATEGY: none
+    KUBE_NAMESPACE: $PROJECT_GROUP_NAME
+    REPOSITORY: $CI_REGISTRY_IMAGE_ALIYUN
+    KUBE_CONFIG: $KUBE_CONFIG_ALIYUN
+  script:
+    - kubectl_aliyun
+    - deploy
+  environment:
+    name: production
+    url: https://${PROJECT_URL_PREFIX}.${AUTO_DEVOPS_DOMAIN_ALIYUN}
+  artifacts:
+    paths:
+      - "*.yaml"
+  when: manual
+  only:
+    refs:
+      - master
+    kubernetes: active
+  dependencies:
+    - staging
+
 # ---------------------------------------------------------------------------
 
 .auto_devops: &auto_devops |
   [[ "$TRACE" ]] && set -x
-  function deploy() {
-    kubectl describe namespace "$KUBE_NAMESPACE" || kubectl create namespace "$KUBE_NAMESPACE"
-    # 在当前命名空间中生成 secret
-    kubectl describe secret bdfint -n "$KUBE_NAMESPACE" || kubectl get secret bdfint -o yaml -n default | sed "s/default/${KUBE_NAMESPACE}/g" | kubectl -n "$KUBE_NAMESPACE" create -f -
-    # frontend
-    helm template helm \
-      --namespace="$KUBE_NAMESPACE" \
-      --name="$CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_SLUG" \
-      --set image.repository="$CI_REGISTRY_IMAGE" \
-      --set image.tag="$CI_COMMIT_SHA" \
-      --set ingress.hosts[0]="${CI_ENVIRONMENT_URL/http*:\/\//}" \
-      > deployment.yaml
-    cat deployment.yaml
-    kubectl apply --namespace="$KUBE_NAMESPACE"  -f deployment.yaml
-  }
   function build() {
     if [[ -n "$CI_REGISTRY_USER" ]]; then
       echo "Logging to GitLab Container Registry with CI credentials..."
@@ -166,17 +185,38 @@ production:
       docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
     fi
   }
+  function deploy() {
+    helm template helm \
+      --namespace="$KUBE_NAMESPACE" \
+      --name="$CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_SLUG" \
+      --set image.repository="$REPOSITORY" \
+      --set image.tag="$CI_COMMIT_SHA" \
+      --set ingress.hosts[0]="${CI_ENVIRONMENT_URL/http*:\/\//}" \
+      > deployment.yaml
+    cat deployment.yaml
+    kubectl apply --namespace="$KUBE_NAMESPACE"  -f deployment.yaml
+  }
   function delete() {
     echo "准备删除旧的部署..."
-    kubectl delete --namespace="$KUBE_NAMESPACE"  -f deployment.yaml
+    kubectl delete all,ing --all --namespace=$KUBE_NAMESPACE
   }
-  function pull() {
+  function docker_aliyun() {
     if [[ -n "$CI_REGISTRY_USER" ]]; then
-      echo "Logging to GitLab Container Registry with CI credentials..."
+      echo "Logging to GitLab Container Registry $CI_REGISTRY with CI credentials..."
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    fi
+    if [[ -n "$CI_REGISTRY_USER_ALIYUN" ]]; then
+      echo "Logging to GitLab Container Registry $CI_REGISTRY_ALIYUN with CI credentials..."
+      docker login -u "$CI_REGISTRY_USER_ALIYUN" -p "$CI_REGISTRY_PASSWORD_ALIYUN" "$CI_REGISTRY_ALIYUN"
     fi
 
     docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    # 推送镜像到阿里云
+    docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE_ALIYUN:$CI_COMMIT_SHA
+    docker push $CI_REGISTRY_IMAGE_ALIYUN:$CI_COMMIT_SHA
+  }
+  function kubectl_aliyun() {
+    mkdir .kube && echo -n $KUBE_CONFIG | base64 -d > .kube/config
   }
 
 before_script:
