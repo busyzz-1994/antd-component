@@ -47,9 +47,8 @@ review_dev:
   stage: review
   variables:
     KUBE_NAMESPACE: dev-${PROJECT_GROUP_NAME}
-  before_script:
-    - export REPOSITORY="$CI_REGISTRY_IMAGE"
   script:
+    - export REPOSITORY="$CI_REGISTRY_IMAGE"
     - deploy
   environment:
     name: dev
@@ -68,9 +67,8 @@ review_test:
   stage: review
   variables:
     KUBE_NAMESPACE: test-${PROJECT_GROUP_NAME}
-  before_script:
-    - export REPOSITORY="$CI_REGISTRY_IMAGE"
   script:
+    - export REPOSITORY="$CI_REGISTRY_IMAGE"
     - deploy
   environment:
     name: test
@@ -126,12 +124,11 @@ staging:
   variables:
     KUBE_NAMESPACE: staging-${PROJECT_GROUP_NAME}
     KUBE_CONFIG: $KUBE_CONFIG_ALIYUN
-  before_script:
-    - export REPOSITORY="$CI_REGISTRY_IMAGE_ALIYUN"
   script:
     # 推送镜像到阿里云
     - docker_aliyun
     - kubectl_aliyun
+    - export REPOSITORY="$CI_REGISTRY_IMAGE_ALIYUN"
     - deploy
   environment:
     name: staging
@@ -151,10 +148,9 @@ production:
   variables:
     KUBE_NAMESPACE: $PROJECT_GROUP_NAME
     KUBE_CONFIG: $KUBE_CONFIG_ALIYUN
-  before_script:
-    - export REPOSITORY="$CI_REGISTRY_IMAGE_ALIYUN"
   script:
     - kubectl_aliyun
+    - export REPOSITORY="$CI_REGISTRY_IMAGE_ALIYUN"
     - deploy
   environment:
     name: production
