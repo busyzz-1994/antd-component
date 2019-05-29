@@ -190,11 +190,11 @@ production:
       --set ingress.hosts[0]="${CI_ENVIRONMENT_URL/http*:\/\//}" \
       > deployment.yaml
     cat deployment.yaml
-    kubectl apply --namespace="$KUBE_NAMESPACE"  -f deployment.yaml
+    kubectl apply --namespace=$KUBE_NAMESPACE -f deployment.yaml
   }
   function delete() {
     echo "准备删除旧的部署..."
-    kubectl delete all,ing --all --namespace=$KUBE_NAMESPACE
+    kubectl delete --namespace=$KUBE_NAMESPACE -f deployment.yaml
   }
   function docker_aliyun() {
     if [[ -n "$CI_REGISTRY_USER" ]]; then
