@@ -182,6 +182,10 @@ production:
     fi
   }
   function deploy() {
+    kubectl describe namespace "$KUBE_NAMESPACE" || kubectl create namespace "$KUBE_NAMESPACE"
+    # 在当前命名空间中生成 secret
+    kubectl describe secret bdfint -n "$KUBE_NAMESPACE" || kubectl get secret bdfint -o yaml -n default | sed "s/default/${KUBE_NAMESPACE}/g" | kubectl -n "$KUBE_NAMESPACE" create -f -
+
     helm template helm \
       --namespace="$KUBE_NAMESPACE" \
       --name="$CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_SLUG" \
@@ -212,7 +216,7 @@ production:
     docker push $CI_REGISTRY_IMAGE_ALIYUN:$CI_COMMIT_SHA
   }
   function kubectl_aliyun() {
-    mkdir .kube && echo -n $KUBE_CONFIG | base64 -d > .kube/config
+    echo -n $KUBE_CONFIG | base64 -d > $KUBECONFIG
   }
 
 before_script:
