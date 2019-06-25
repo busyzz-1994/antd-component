@@ -5,7 +5,7 @@ variables:
   AUTO_DEVOPS_DOMAIN_ALIYUN: zsteel.cc
   # 不带标签的镜像仓库地址，用于推送镜像 （可以修改$CI_PROJECT_PATH_SLUG为你的项目名）
   CI_REGISTRY_IMAGE: ${CI_REGISTRY}/fed/${CI_PROJECT_PATH_SLUG}
-  CI_REGISTRY_IMAGE_ALIYUN: ${CI_REGISTRY_ALIYUN}/bdfint/react-boilerplate
+  CI_REGISTRY_IMAGE_ALIYUN: ${CI_REGISTRY_ALIYUN}/bdfint/${CI_PROJECT_PATH_SLUG}
 
   # 项目的域名名称前缀 *.stable-dev.bdfint.cn *.stable-test.bdfint.cn *.zsteel.cc
   PROJECT_URL_PREFIX: react-boilerplate
