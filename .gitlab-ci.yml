@@ -186,12 +186,15 @@ production:
     # 在当前命名空间中生成 secret
     kubectl describe secret bdfint -n "$KUBE_NAMESPACE" || kubectl get secret bdfint -o yaml -n default | sed "s/default/${KUBE_NAMESPACE}/g" | kubectl -n "$KUBE_NAMESPACE" create -f -
 
+    INGRESS_HOST="${CI_ENVIRONMENT_URL/http*:\/\//}"
+    INGRESS_HOST="${INGRESS_HOST%%/*}"
+
     helm template helm \
       --namespace="$KUBE_NAMESPACE" \
       --name="$CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_SLUG" \
       --set image.repository="$REPOSITORY" \
       --set image.tag="$CI_COMMIT_SHA" \
-      --set ingress.hosts[0]="${CI_ENVIRONMENT_URL/http*:\/\//}" \
+      --set ingress.hosts[0]="$INGRESS_HOST" \
       > deployment.yaml
     cat deployment.yaml
     kubectl apply --namespace=$KUBE_NAMESPACE -f deployment.yaml
