@@ -1,0 +1,14 @@
+@mixin btn-color($backgroundColor, $color) {
+  border-color: $backgroundColor;
+  color: $color;
+  background: $backgroundColor;
+
+  &:hover {
+    background: lighten($backgroundColor, 10%);
+    border-color: lighten($backgroundColor, 10%);
+  }
+
+  &:active {
+    background: lighten($backgroundColor, 10%);
+  }
+}

@@ -5,10 +5,10 @@ import React, { Component, Fragment } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { config } from 'utils/request';
 import './App.css';
-import Demo from './pages/Demo';
+// import Demo from './pages/Demo';
 import SettingsStore from './stores/Settings';
 import UserStore from './stores/User';
-
+import Index from './pages';
 const user = new UserStore();
 const settings = new SettingsStore();
 
@@ -22,7 +22,7 @@ class App extends Component {
           {process.env.NODE_ENV === 'development' ? <DevTools noPanel /> : null}
           <Router>
             <Switch>
-              <Route exact path="/" component={Demo} />
+              <Route exact path="/" component={Index} />
               <Route exact path="//settings" component={Settings} />
             </Switch>
           </Router>

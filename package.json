@@ -3,12 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
+    "@types/better-scroll": "^1.12.1",
     "@types/jest": "^24.0.9",
     "@types/node": "^11.10.4",
     "@types/react": "^16.8.17",
     "@types/react-dom": "^16.8.4",
     "@types/react-router-dom": "^4.3.3",
+    "antd": "^3.19.2",
     "box-react": "^1.1.0",
+    "busyzz-lib": "^1.0.2",
+    "classnames": "^2.2.6",
     "consolev": "^1.0.6",
     "cross-env": "^5.2.0",
     "date-fns": "^1.30.1",
@@ -19,17 +23,20 @@
     "node-sass": "^4.12.0",
     "pre-commit": "^1.2.2",
     "preval.macro": "^3.0.0",
+    "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.0",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.1",
+    "react-transition-group": "^4.2.2",
     "typescript": "^3.4.5",
     "zent": "^6.6.5"
   },
   "devDependencies": {
     "jest-puppeteer": "^4.0.0",
-    "node-sass": "^4.12.0"
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.3.1"
   },
   "scripts": {
     "iconfont": "node scripts/iconfont.js",

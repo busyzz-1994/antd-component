@@ -1,0 +1,40 @@
+@import '../../style/themes/default.scss';
+@import './mixin.scss';
+
+.#{$prefix} {
+
+  /*btn基本样式*/
+  &-btn {
+    line-height: 30px;
+    display: inline-block;
+    height: 32px;
+    padding: 0 15px;
+    font-size: 14px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    outline: 0;
+
+    // 默认样式
+    &-default {
+      border-color: $normal-color;
+
+      &:hover {
+        color: $primary-color;
+        border-color: $primary-color;
+      }
+    }
+
+    //primary样式
+    &-primary {
+      @include btn-color($primary-color, $white)
+    }
+
+    &-danger {
+      @include btn-color($danger-color, $white)
+    }
+  }
+}
