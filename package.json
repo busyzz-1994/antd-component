@@ -48,7 +48,7 @@
     "stats": "npm run build -- --stats && npx webpack-bundle-analyzer build/bundle-stats.json"
   },
   "pre-commit": [
-    "lint"
+
   ],
   "eslintConfig": {
     "extends": "react-app",
