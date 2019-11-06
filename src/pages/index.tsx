@@ -15,6 +15,11 @@ export default class extends Component<any, IState> {
         <Mbutton type="primary" loading={this.state.loading} delay={1000}>
           thisssss
         </Mbutton>
+        <Mbutton.Group size="default" type="default">
+          <Mbutton>thisssss</Mbutton>
+          <Mbutton>kkk</Mbutton>
+          <Mbutton>oooo</Mbutton>
+        </Mbutton.Group>
         <div style={{ marginTop: 10 }}>
           <Button
             type="primary"

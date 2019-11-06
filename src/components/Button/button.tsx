@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { tuple } from '../utils';
-// import * as PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { getPrefix } from '../utils';
 import './style/index.scss';
+import Group from './button-group';
 const ButtonTypes = tuple('default', 'primary', 'danger', 'success');
-type ButtonType = (typeof ButtonTypes)[number];
+export type ButtonType = (typeof ButtonTypes)[number];
 const ButtonShapes = tuple('round');
-type ButtonShape = (typeof ButtonShapes)[number];
+export type ButtonShape = (typeof ButtonShapes)[number];
 const ButtonSizes = tuple('large', 'default', 'small');
-type ButtonSize = (typeof ButtonSizes)[number];
+export type ButtonSize = (typeof ButtonSizes)[number];
 interface BaseButtonProps {
   type?: ButtonType;
   shape?: ButtonShape;
@@ -17,7 +17,7 @@ interface BaseButtonProps {
   disabled?: boolean;
   loading?: boolean;
   onClick?: React.MouseEventHandler;
-  className?: React.CSSProperties;
+  className?: string;
   delay?: number;
   block?: boolean;
 }
@@ -25,6 +25,7 @@ interface ButtonState {
   clicked: boolean;
 }
 export default class extends Component<BaseButtonProps, ButtonState> {
+  static Group = Group;
   static defaultProps = {
     type: 'default',
     size: 'default'

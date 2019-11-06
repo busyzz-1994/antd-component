@@ -12,6 +12,43 @@ $small_height:24;
 
 .#{$prefix} {
 
+  //按钮组
+  &-btn-group {
+
+    //有多个按钮时的样式
+    &-multi {
+      .#{$prefix+'-btn'} {
+        &:not(:first-child):not(:last-child) {
+          border-radius: 0;
+        }
+
+        &:first-child {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+
+          ~button {
+            border-left-color: $normal-color;
+          }
+        }
+
+        &:last-child {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+      }
+
+      &-default {
+        .#{$prefix+'-btn'} {
+          &:first-child {
+            ~button {
+              border-left-color: transparent;
+            }
+          }
+        }
+      }
+    }
+  }
+
   /*btn基本样式*/
   &-btn {
     display: inline-block;
@@ -47,12 +84,12 @@ $small_height:24;
 
       &:hover {
         color: $primary-color;
-        border-color: $primary-color;
+        border-color: $primary-color !important;
       }
 
       &:active {
         color: $primary-color-2;
-        border-color: $primary-color-2;
+        border-color: $primary-color-2 !important;
       }
     }
 
