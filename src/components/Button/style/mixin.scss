@@ -4,11 +4,24 @@
   background: $backgroundColor;
 
   &:hover {
-    background: lighten($backgroundColor, 10%);
-    border-color: lighten($backgroundColor, 10%);
+    background: lighten($backgroundColor, 5%);
+    border-color: lighten($backgroundColor, 5%);
   }
 
   &:active {
-    background: lighten($backgroundColor, 10%);
+    background: darken($backgroundColor, 10%);
+    border-color: darken($backgroundColor, 10%);
+
+  }
+}
+
+@mixin btn-size($size, $padding, $height) {
+  font-size: $size;
+  padding: 0 $padding;
+  height: #{$height + 'px'};
+  line-height: #{$height - 2 +'px'};
+
+  &-round {
+    border-radius:#{$height + 'px'};
   }
 }

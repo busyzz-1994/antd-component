@@ -1,15 +1,20 @@
 @import '../../style/themes/default.scss';
 @import './mixin.scss';
+$default_padding:15px;
+$default_size:14px;
+$default_height:32;
+$large_padding:15px;
+$large_size:16px;
+$large_height:40;
+$small_padding:7px;
+$small_size:14px;
+$small_height:24;
 
 .#{$prefix} {
 
   /*btn基本样式*/
   &-btn {
-    line-height: 30px;
     display: inline-block;
-    height: 32px;
-    padding: 0 15px;
-    font-size: 14px;
     background-color: #fff;
     border: 1px solid transparent;
     border-radius: 4px;
@@ -17,6 +22,24 @@
     transition: all 0.3s ease;
     position: relative;
     outline: 0;
+    text-align: center;
+
+    &-block {
+      width: 100%;
+    }
+
+    &[disabled] {
+
+      &,
+      &:hover {
+        background: $white-2;
+        border-color: $normal-color;
+        color: $normal-color;
+        cursor: not-allowed;
+      }
+    }
+
+
 
     // 默认样式
     &-default {
@@ -25,6 +48,11 @@
       &:hover {
         color: $primary-color;
         border-color: $primary-color;
+      }
+
+      &:active {
+        color: $primary-color-2;
+        border-color: $primary-color-2;
       }
     }
 
@@ -35,6 +63,71 @@
 
     &-danger {
       @include btn-color($danger-color, $white)
+    }
+
+    &-success {
+      @include btn-color($success-color, $white)
+    }
+
+    //size
+    &-size-large {
+      @include btn-size($large_size, $large_padding, $large_height);
+    }
+
+    &-size-default {
+      @include btn-size($default_size, $default_padding, $default_height);
+    }
+
+    &-size-small {
+      @include btn-size($small_size, $small_padding, $small_height);
+    }
+
+    //loading 状态下
+    &-loading {
+      &::before {
+        position: absolute;
+        content: '';
+        display: block;
+        top: -1px;
+        left: -1px;
+        right: -1px;
+        bottom: -1px;
+        border-radius: inherit;
+        border: 1px solid transparent;
+        z-index: 2;
+        background: #fff;
+        opacity: 0.35;
+        cursor: not-allowed;
+      }
+    }
+
+    //点击后 添加光晕效果
+    &-clicked {
+      &::before {
+        position: absolute;
+        content: '';
+        display: block;
+        top: -1px;
+        left: -1px;
+        right: -1px;
+        bottom: -1px;
+        border: 1px solid transparent;
+        border-color: inherit;
+        border-radius: inherit;
+        animation: buttonEffect 0.3s;
+        opacity: 0.6;
+      }
+    }
+
+    @keyframes buttonEffect {
+      to {
+        opacity: 0;
+        top: -6px;
+        left: -6px;
+        right: -6px;
+        bottom: -6px;
+        border-width: 6px;
+      }
     }
   }
 }
