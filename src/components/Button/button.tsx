@@ -10,6 +10,8 @@ const ButtonShapes = tuple('round');
 export type ButtonShape = (typeof ButtonShapes)[number];
 const ButtonSizes = tuple('large', 'default', 'small');
 export type ButtonSize = (typeof ButtonSizes)[number];
+const rxTwoCNChar = /^[\u4e00-\u9fa5]{2}$/;
+const isTwoCNChar = rxTwoCNChar.test.bind(rxTwoCNChar);
 interface BaseButtonProps {
   type?: ButtonType;
   shape?: ButtonShape;
@@ -58,6 +60,19 @@ export default class extends Component<BaseButtonProps, ButtonState> {
       }
     );
   };
+  //为2个中文字的时候 插入空格
+  insetSpace = child => {
+    try {
+      let inset = isTwoCNChar(child);
+      if (inset) {
+        return child.split('').join(' ');
+      } else {
+        return child;
+      }
+    } catch (e) {
+      return child;
+    }
+  };
   render() {
     let {
       type,
@@ -65,7 +80,6 @@ export default class extends Component<BaseButtonProps, ButtonState> {
       shape,
       size,
       className,
-      loading: pLoading,
       loading,
       block,
       ...rest
@@ -80,6 +94,7 @@ export default class extends Component<BaseButtonProps, ButtonState> {
       [`${prefixCls}-loading`]: loading,
       [`${prefixCls}-block`]: block
     });
+    children = this.insetSpace(children);
     return (
       <button {...rest} className={classes} onClick={this.handleClick}>
         {children}

@@ -1,0 +1,42 @@
+@import '../../style/themes/default.scss';
+
+.#{$prefix} {
+  &-typography {
+    span {
+      display: inline-block;
+    }
+
+    //code标签样式
+    code {
+      margin: 0 0.2em;
+      padding: 0.2em 0.4em 0.1em;
+      font-size: 85%;
+      background: rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 3px;
+    }
+
+    //mark标签样式
+    mark {
+      background-color: #ffe58f;
+    }
+
+    &-disabled {
+      user-select: none;
+      cursor: not-allowed;
+      color: $normal-color;
+    }
+
+    &-danger {
+      color: $danger-color;
+    }
+
+    &-warn {
+      color: $warn-color;
+    }
+
+    &-secondary {
+      color: rgba(0, 0, 0, 0.45);
+    }
+  }
+}

@@ -35,21 +35,19 @@
   },
   "devDependencies": {
     "jest-puppeteer": "^4.0.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.0",
     "sass-loader": "^7.3.1"
   },
   "scripts": {
     "iconfont": "node scripts/iconfont.js",
-    "start": "cross-env PORT=3002 react-scripts start",
+    "start": "cross-env PORT=3003 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:integration": "jest -c integration/jest.config.js",
     "lint": "eslint src --ext .tsx,.ts,.jsx,.js --cache --fix --max-warnings=0",
     "stats": "npm run build -- --stats && npx webpack-bundle-analyzer build/bundle-stats.json"
   },
-  "pre-commit": [
-
-  ],
+  "pre-commit": [],
   "eslintConfig": {
     "extends": "react-app",
     "parserOptions": {
