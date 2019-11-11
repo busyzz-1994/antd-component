@@ -1,0 +1,19 @@
+@import '../../style/themes/default.scss';
+
+@mixin makeCol() {
+  @for $i from 1 through 24 {
+    .#{$prefix+'-col-'+$i} {
+      width: percentage($i/24);
+      float: left;
+    }
+  }
+}
+
+@mixin makeColWithSize($size) {
+  @for $i from 1 through 24 {
+    .#{$prefix+'-col-'+$size+$i} {
+      width: percentage($i/24);
+      float: left;
+    }
+  }
+}

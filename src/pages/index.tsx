@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import MTypography from 'components/Typography';
+import { MRow, MCol } from 'components/Grid';
+import './index.scss';
 import 'antd/dist/antd.css';
-import { Typography } from 'antd';
-const { Text } = Typography;
-const { Text: MText } = MTypography;
+import { Row, Col } from 'antd';
 interface IState {
   loading: boolean;
 }
@@ -11,18 +10,23 @@ export default class extends Component<any, IState> {
   state = {
     loading: false
   };
+
   render() {
     return (
-      <div style={{ margin: 10 }}>
-        <MTypography>
-          <MText copyable={true}>54545</MText>
-        </MTypography>
-        <div style={{ marginTop: 10 }}>
-          <Typography>
-            <Text type="secondary">
-              上传的视频尺寸过大时帮助中心和公告展示不佳上传的视频尺寸过大时帮助中心和公告展示不佳上传的视频尺寸过大时帮助中心和公告展示不佳上传的视频尺寸过大时帮助中心和公告展示不佳上传的视频尺寸过大时帮助中心和公告展示不佳上传的视频尺寸过大时帮助中心和公告展示不佳上传的视频尺寸过大时帮助中心和公告展示不佳上传的视频尺寸过大时帮助中心和公告展示不佳上传的视频尺寸过大时帮助中心和公告展示不佳上传的视频尺寸过大时帮助中心和公告展示不佳
-            </Text>
-          </Typography>
+      <div>
+        <div style={{ overflowX: 'hidden' }}>
+          <MRow gutter={{ md: 30 }}>
+            <MCol span={6}>88888</MCol>
+            <MCol span={6}>9999</MCol>
+          </MRow>
+          <Row gutter={{ md: 50 }}>
+            <Col span={6}>
+              <div>ddd</div>
+            </Col>
+            <Col span={6}>
+              <div>ddd</div>
+            </Col>
+          </Row>
         </div>
       </div>
     );

@@ -40,7 +40,7 @@
   },
   "scripts": {
     "iconfont": "node scripts/iconfont.js",
-    "start": "cross-env PORT=3003 react-scripts start",
+    "start": "cross-env PORT=3333 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:integration": "jest -c integration/jest.config.js",

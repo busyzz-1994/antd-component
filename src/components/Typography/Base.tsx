@@ -15,6 +15,7 @@ export interface BaseProps {
   type?: TextType;
   disabled?: boolean;
   copyable?: boolean;
+  component?: string;
 }
 //创建对应标签包裹内容
 function wrapperContent(
@@ -41,24 +42,27 @@ export default class extends Component<BaseProps> {
     mark: false,
     underline: false,
     strong: false,
-    code: false
+    code: false,
+    component: 'span'
   };
   copy = () => {
     let { children } = this.props;
     copy(children as string);
-    console.log('copy');
   };
   renderCopy = (classes, children) => {
+    const { component } = this.props;
+    const Component = component as any;
     const ele = (
-      <span onClick={this.copy} className={classes}>
+      <Component onClick={this.copy} className={classes}>
         {children}
-      </span>
+      </Component>
     );
     return ele;
   };
   render() {
-    let { children, type, disabled, copyable } = this.props;
+    let { children, type, disabled, copyable, component } = this.props;
     const prefixCls = getPrefix('typography');
+    const Component = component as any;
     const classes = classNames({
       [`${prefixCls}-${type}`]: type,
       [`${prefixCls}-disabled`]: disabled
@@ -67,7 +71,7 @@ export default class extends Component<BaseProps> {
     return copyable ? (
       this.renderCopy(classes, children)
     ) : (
-      <span className={classes}>{children}</span>
+      <Component className={classes}>{children}</Component>
     );
   }
 }

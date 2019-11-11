@@ -1,0 +1,15 @@
+@import '../../style/themes/default.scss';
+@import '../../style/mixin/index.scss';
+@import './mixin.scss';
+
+.busyzz-row {
+  position: relative;
+  height: auto;
+  zoom: 1;
+  display: block;
+  box-sizing: border-box;
+  @include clearfix();
+}
+
+@include makeCol();
+@include makeColWithSize('xs');
