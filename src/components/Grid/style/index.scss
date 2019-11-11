@@ -2,7 +2,7 @@
 @import '../../style/mixin/index.scss';
 @import './mixin.scss';
 
-.busyzz-row {
+.#{$prefix}-row {
   position: relative;
   height: auto;
   zoom: 1;
@@ -13,3 +13,23 @@
 
 @include makeCol();
 @include makeColWithSize('xs');
+
+@media (min-width:$screen-sm-min) {
+  @include makeColWithSize('sm');
+}
+
+@media (min-width:$screen-md-min) {
+  @include makeColWithSize('md');
+}
+
+@media (min-width:$screen-lg-min) {
+  @include makeColWithSize('lg');
+}
+
+@media (min-width:$screen-xl-min) {
+  @include makeColWithSize('xl');
+}
+
+@media (min-width:$screen-xxl-min) {
+  @include makeColWithSize('xxl');
+}

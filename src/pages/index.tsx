@@ -16,8 +16,9 @@ export default class extends Component<any, IState> {
       <div>
         <div style={{ overflowX: 'hidden' }}>
           <MRow gutter={{ md: 30 }}>
-            <MCol span={6}>88888</MCol>
-            <MCol span={6}>9999</MCol>
+            <MCol md={{ span: 6, offset: 6 }} xl={{ span: 4, offset: 4 }}>
+              88888
+            </MCol>
           </MRow>
           <Row gutter={{ md: 50 }}>
             <Col span={6}>

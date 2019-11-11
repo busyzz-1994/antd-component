@@ -5,15 +5,49 @@
     .#{$prefix+'-col-'+$i} {
       width: percentage($i/24);
       float: left;
+      position: relative;
+    }
+
+    .#{$prefix+'-col-offset-'+$i} {
+      margin-left: percentage($i/24);
+    }
+
+    .#{$prefix+'-col-push-'+$i} {
+      left: percentage($i/24);
+    }
+
+    .#{$prefix+'-col-pull-'+$i} {
+      right: percentage($i/24);
+    }
+
+    .#{$prefix+'-col-order-'+$i} {
+      order: $i;
     }
   }
 }
 
 @mixin makeColWithSize($size) {
   @for $i from 1 through 24 {
-    .#{$prefix+'-col-'+$size+$i} {
+    .#{$prefix+'-col-'+$size+'-'+$i} {
       width: percentage($i/24);
       float: left;
+      position: relative;
+    }
+
+    .#{$prefix+'-col-'+$size+'-offset-'+$i} {
+      margin-left: percentage($i/24);
+    }
+
+    .#{$prefix+'-col-'+$size+'-push-'+$i} {
+      left: percentage($i/24);
+    }
+
+    .#{$prefix+'-col-'+$size+'-pull-'+$i} {
+      right: percentage($i/24);
+    }
+
+    .#{$prefix+'-col-'+$size+'-order-'+$i} {
+      order: $i;
     }
   }
 }
