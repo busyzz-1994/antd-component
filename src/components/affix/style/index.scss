@@ -1,0 +1,9 @@
+@import '../../style/themes/default.scss';
+
+.#{$prefix} {
+  &-affix {
+    &-fixed {
+      position: fixed;
+    }
+  }
+}

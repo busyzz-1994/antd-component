@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { MRow, MCol } from 'components/Grid';
+import Affix from 'components/affix';
 import './index.scss';
 import 'antd/dist/antd.css';
-import { Row, Col } from 'antd';
+// import { Row, Col } from 'antd';
 interface IState {
   loading: boolean;
 }
@@ -14,20 +14,14 @@ export default class extends Component<any, IState> {
   render() {
     return (
       <div>
-        <div style={{ overflowX: 'hidden' }}>
-          <MRow gutter={{ md: 30 }}>
-            <MCol md={{ span: 6, offset: 6 }} xl={{ span: 4, offset: 4 }}>
-              88888
-            </MCol>
-          </MRow>
-          <Row gutter={{ md: 50 }}>
-            <Col span={6}>
-              <div>ddd</div>
-            </Col>
-            <Col span={6}>
-              <div>ddd</div>
-            </Col>
-          </Row>
+        <div style={{ overflowX: 'hidden', marginTop: 200 }}>
+          <div style={{ position: 'relative' }}>
+            <Affix offsetTop={50} onChange={s => console.log(s)}>
+              <div className="div">okk</div>
+            </Affix>
+          </div>
+
+          <div style={{ height: 2000 }}>oooo</div>
         </div>
       </div>
     );
