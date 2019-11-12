@@ -9,6 +9,8 @@ import './App.css';
 import SettingsStore from './stores/Settings';
 import UserStore from './stores/User';
 import Index from './pages';
+import { LocaleProvider } from 'antd';
+import zh_CN from 'antd/lib/locale-provider/zh_CN';
 const user = new UserStore();
 const settings = new SettingsStore();
 
@@ -17,17 +19,21 @@ config.url(url => `${settings.apiServer}${url}`);
 class App extends Component {
   render() {
     return (
-      <Provider user={user} settings={settings}>
-        <Fragment>
-          {process.env.NODE_ENV === 'development' ? <DevTools noPanel /> : null}
-          <Router>
-            <Switch>
-              <Route exact path="/" component={Index} />
-              <Route exact path="//settings" component={Settings} />
-            </Switch>
-          </Router>
-        </Fragment>
-      </Provider>
+      <LocaleProvider locale={zh_CN}>
+        <Provider user={user} settings={settings}>
+          <Fragment>
+            {process.env.NODE_ENV === 'development' ? (
+              <DevTools noPanel />
+            ) : null}
+            <Router>
+              <Switch>
+                <Route exact path="/" component={Index} />
+                <Route exact path="//settings" component={Settings} />
+              </Switch>
+            </Router>
+          </Fragment>
+        </Provider>
+      </LocaleProvider>
     );
   }
 }
