@@ -1,0 +1,25 @@
+@import '../../style/themes/default.scss';
+@import '../../style/mixin/index.scss';
+$default-height:32px;
+$default-padding:4px 11px;
+
+.#{$prefix}-input {
+  @include reset-component();
+  display: inline-block;
+  width: 100%;
+  outline: none;
+  height: $default-height;
+  padding: $default-padding;
+  transition: all 0.3s;
+  border-radius: 4px;
+  border: 1px solid #d9d9d9;
+
+  &:hover {
+    border-color: $primary-color;
+  }
+
+  &:focus {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+  }
+}

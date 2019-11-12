@@ -1,4 +1,6 @@
 $prefix:busyzz;
+
+//颜色
 $primary-color:#1890ff;
 $primary-color-2:#096dd9;
 $danger-color:#ff4d4f;
@@ -8,6 +10,10 @@ $warn-color:#F4BD00;
 $white:#fff;
 $white-2:#F5F5F5;
 $black:#000;
+//字体
+$font-size-base:14px;
+$text-color:fade($black, 65%);
+$line-height-base:1.5;
 //media query
 $screen-xs:480px;
 $screen-xs-min:$screen-xs;
