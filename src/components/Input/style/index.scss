@@ -2,6 +2,10 @@
 @import '../../style/mixin/index.scss';
 $default-height:32px;
 $default-padding:4px 11px;
+$lg-height:40px;
+$lg-padding:6px 11px;
+$sm-height:24px;
+$sm-padding:1px 7px;
 
 .#{$prefix}-input {
   @include reset-component();
@@ -21,5 +25,17 @@ $default-padding:4px 11px;
   &:focus {
     border-color: $primary-color;
     box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+  }
+
+  //size
+  &-large {
+    padding: $lg-padding;
+    height: $lg-height;
+    font-size: $font-size-large;
+  }
+
+  &-small {
+    padding: $sm-padding;
+    height: $sm-height;
   }
 }
