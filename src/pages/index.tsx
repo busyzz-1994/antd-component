@@ -7,6 +7,17 @@ interface IState {
   loading: boolean;
   value: string;
 }
+// class Text extends Component<any> {
+//   render() {
+//     let { children } = this.props;
+//     //@ts-ignore
+//     children = React.cloneElement(children, {
+//       className: 'div p',
+//       style: null
+//     });
+//     return <div>{children}</div>;
+//   }
+// }
 export default class extends Component<any, IState> {
   state = {
     loading: false,
@@ -25,15 +36,23 @@ export default class extends Component<any, IState> {
               onChange={this.inputHandler}
               size={'large'}
               value={this.state.value}
+              suffix={'he'}
+              prefix={'oo'}
             />
           </div>
           <div style={{ position: 'relative', margin: 10 }}>
             <Input
+              prefix={'xxxxxx'}
               suffix={
                 <Icon type="info-circle" style={{ color: 'rgba(0,0,0,.45)' }} />
               }
             />
           </div>
+          {/* <Text>
+            <div style={{ width: 500 }} className="p">
+              okkkk
+            </div>
+          </Text> */}
         </div>
       </div>
     );

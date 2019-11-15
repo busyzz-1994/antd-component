@@ -38,4 +38,37 @@ $sm-padding:1px 7px;
     padding: $sm-padding;
     height: $sm-height;
   }
+
+  &-suffix {
+    padding-right: 30px;
+  }
+
+  &-prefix {
+    padding-left: 30px;
+  }
+}
+
+.#{$prefix}-input-affix-wrapper {
+  position: relative;
+  display: block;
+
+  span {
+    display: none;
+  }
+
+  .#{$prefix}-suffix {
+    display: block;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .#{$prefix}-prefix {
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }
