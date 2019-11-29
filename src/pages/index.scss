@@ -1,10 +1,18 @@
-.div {
-  height: 30px;
-  background: #000;
-  width: 80px;
-}
-
-.p {
+.test-box {
   width: 200px;
-  background: red;
+  height: 200px;
+  border: 1px solid #000;
+  margin-left: 100px;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    display: block;
+    background: red;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+  }
 }

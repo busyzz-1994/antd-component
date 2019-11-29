@@ -25,3 +25,38 @@
   list-style: none;
   line-height: $line-height-base;
 }
+
+//设置一个 跟 父容器一样大小的元素
+@mixin absWithFather() {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+}
+
+//设置点击后的动画环绕效果
+@mixin clickedEffect($border-color:$primary-color) {
+  @keyframes borderEffect {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+      border-width: 1px;
+    }
+
+    100% {
+      transform: scale(1.4);
+      opacity: 0;
+      border-width: 2px;
+    }
+  }
+
+  @include absWithFather();
+  content:'';
+  border:1px solid $border-color;
+  border-radius: $border-radius-xs;
+  animation: borderEffect 0.3s ease-in-out;
+}
