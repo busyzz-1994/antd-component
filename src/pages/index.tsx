@@ -3,10 +3,12 @@ import './index.scss';
 import 'antd/dist/antd.css';
 import { Radio, Tooltip, Button } from 'antd';
 import MRadio from '../components/Radio';
-import Trigger from 'rc-trigger';
+// import Trigger from 'rc-trigger';
 import Test from './test';
-import { findDOMNode } from 'react-dom';
+// import { findDOMNode } from 'react-dom';
 import Portal from 'components/Portal';
+// import getScrollBarSize from 'utils/dom/getScrollBarSize';
+import keyBoard from 'utils/event/keyboard';
 interface IState {
   loading: boolean;
   value: number;
@@ -28,9 +30,7 @@ export default class extends Component<any, IState> {
     // console.log(align);
   };
   componentDidMount() {
-    let { current } = this.div;
-    // let dom = findDOMNode(current);
-    // console.log(dom);
+    let div = document.createElement('div');
   }
   onPopupVisibleChange = value => {
     console.log(value);
@@ -39,41 +39,50 @@ export default class extends Component<any, IState> {
     });
   };
   onForceUpdate = () => {
-    this.forceUpdate();
+    let res = window.getComputedStyle(this.div.current, null);
+    console.log(res);
+    // this.setState(prevState => ({ popupVisible: !prevState.popupVisible }));
   };
-  componentDidUpdate() {
-    console.log('update');
-  }
+  componentDidUpdate() {}
+  onKeyBorad = e => {
+    let keyCode = e.keyCode;
+    // console.log(keyCode);
+  };
   render() {
     let { value, popupVisible } = this.state;
-    console.log('render');
     let ele = <div style={{ height: 100 }}>sdjiajsdi</div>;
+
     return (
       <div>
         <div style={{ marginBottom: 100 }}>
-          <div style={{ position: 'relative', marginTop: 100 }}>
+          {/* <div ref={this.div} className={'outer'}>
+            <div className="inner"></div>
+          </div> */}
+          <div ref={this.div} style={{ position: 'relative', marginTop: 100 }}>
             <Button onClick={this.onForceUpdate}>click</Button>
-            <Portal>
-              <div>this is ok </div>
-            </Portal>
-            <Tooltip
+            {popupVisible ? (
+              <Portal wrapperClassName="csl">
+                <div>54545</div>
+              </Portal>
+            ) : null}
+
+            {/* <Tooltip
               visible={true}
               autoAdjustOverflow={true}
               trigger="click"
               title={'ss'}
             >
               <div>thishh</div>
-            </Tooltip>
-            <Tooltip autoAdjustOverflow={true} trigger="click" title={'ddd'}>
+            </Tooltip> */}
+            {/* <Tooltip autoAdjustOverflow={true} trigger="click" title={'ddd'}>
               <div style={{ width: 600 }}>sdsdsd</div>
-            </Tooltip>
+            </Tooltip> */}
           </div>
           <div style={{ position: 'relative', margin: 10 }}>
-            <Test ref={this.test} />
-            <div ref={this.div}></div>
+            <div></div>
           </div>
           <div className="test-box">
-            <Trigger
+            {/* <Trigger
               action={['hover']}
               popupStyle={{ position: 'absolute' }}
               // prefixCls="busyzz-trigger-popup"
@@ -89,7 +98,7 @@ export default class extends Component<any, IState> {
               popupVisible={popupVisible}
             >
               <div>trigger change</div>
-            </Trigger>
+            </Trigger> */}
           </div>
         </div>
       </div>

@@ -8,6 +8,9 @@ export default class extends Component<IProps> {
   say = () => {
     console.log('say hello');
   };
+  componentWillUnmount() {
+    console.log('destory');
+  }
   render() {
     return (
       <div id="test">
