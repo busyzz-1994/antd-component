@@ -5,8 +5,17 @@ interface IProps {
   children: React.ReactElement;
   getContainer?: any;
   wrapperClassName?: string;
+  wrapperStyle?: React.CSSProperties;
 }
 export default class extends Component<IProps> {
+  static defaultProps = {
+    wrapperStyle: {
+      position: 'absolute',
+      top: '0px',
+      left: '0px',
+      width: '100%'
+    }
+  };
   getParent = () => {
     let { getContainer } = this.props;
     if (typeof getContainer === 'string') {
@@ -22,10 +31,15 @@ export default class extends Component<IProps> {
     return document.body;
   };
   getContainer = () => {
-    const { wrapperClassName } = this.props;
+    const { wrapperClassName, wrapperStyle } = this.props;
     const div = document.createElement('div');
     const parent = this.getParent() as HTMLElement;
     if (wrapperClassName) div.className = wrapperClassName;
+    if (wrapperStyle) {
+      for (let key in wrapperStyle) {
+        div.style[key] = wrapperStyle[key];
+      }
+    }
     if (parent) parent.appendChild(div);
     return div;
   };

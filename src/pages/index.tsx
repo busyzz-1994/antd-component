@@ -1,7 +1,7 @@
 import React, { Component, SFC } from 'react';
 import './index.scss';
 import 'antd/dist/antd.css';
-import { Radio, Tooltip, Button, Progress } from 'antd';
+import { Radio, Tooltip, Button, Progress, notification } from 'antd';
 import MRadio from '../components/Radio';
 import Trigger from 'rc-trigger';
 import Test from './test';
@@ -10,6 +10,8 @@ import MTooltip from 'components/Tooltip';
 import Portal from 'components/Portal';
 // import getScrollBarSize from 'utils/dom/getScrollBarSize';
 import keyBoard from 'utils/event/keyboard';
+import Notification from 'rc-notification';
+import _notification from 'components/Notification';
 interface IState {
   loading: boolean;
   value: number;
@@ -33,7 +35,9 @@ export default class extends Component<any, IState> {
     // console.log(align);
   };
   componentDidMount() {
-    let div = document.createElement('div');
+    _notification.open({
+      description: 'description设置'
+    });
   }
   onPopupVisibleChange = value => {
     this.setState({
@@ -56,6 +60,56 @@ export default class extends Component<any, IState> {
   onVisibleChange = v => {
     this.setState({ Mvisible: v });
   };
+  noti = () => {
+    Notification.newInstance({}, notification => {
+      notification.notice({
+        content: 'content',
+        duration: 1000,
+        closable: true,
+        closeIcon: <span>X</span>
+      });
+      notification.notice({
+        content: '少时诵诗书、',
+        duration: 1000,
+        closable: true,
+        closeIcon: <span>X</span>
+      });
+    });
+  };
+  openNotification = () => {
+    notification.warn({
+      message: 'Notification Title',
+      duration: null,
+      description:
+        'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+      onClick: () => {
+        console.log('Notification Clicked!');
+      }
+    });
+  };
+  destroyNotification = () => {
+    notification.destroy();
+  };
+  destroyNotificationLeft = () => {
+    notification.destroy();
+  };
+  openNotificationLeft = () => {
+    notification.open({
+      message: 'Notification Left',
+      duration: null,
+      placement: 'topLeft',
+      description:
+        'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+      onClick: () => {
+        console.log('Notification Clicked!');
+      }
+    });
+  };
+  createInstance = () => {
+    _notification.open({
+      description: 'description设置'
+    });
+  };
   render() {
     let { value, popupVisible, Mvisible } = this.state;
     let ele = <div style={{ height: 100 }}>sdjiajsdi</div>;
@@ -63,37 +117,8 @@ export default class extends Component<any, IState> {
     return (
       <div>
         <div style={{ marginBottom: 100 }}>
-          <div>
-            <Progress
-              format={percent => percent + '%'}
-              percent={50}
-              status="active"
-            />
-            <div className="progress">
-              <div className="progress-outer">
-                <div className="progress-inner">
-                  <div className="progress-bg"></div>
-                </div>
-              </div>
-              <div className="progress-text">50%</div>
-            </div>
-          </div>
           <div ref={this.div} style={{ position: 'relative', marginTop: 100 }}>
             <Button onClick={this.onForceUpdate}>click</Button>
-            {popupVisible ? (
-              <Portal wrapperClassName="csl">
-                <div>54545</div>
-              </Portal>
-            ) : null}
-
-            {/* <Tooltip
-              visible={true}
-              autoAdjustOverflow={true}
-              trigger="click"
-              title={'ss'}
-            >
-              <div>thishh</div>
-            </Tooltip> */}
             <Tooltip
               visible={true}
               autoAdjustOverflow={true}
@@ -104,44 +129,14 @@ export default class extends Component<any, IState> {
               <div style={{ width: 600 }}>sdsdsd</div>
             </Tooltip>
           </div>
-          <div style={{ position: 'relative', margin: 10 }}>
-            <MTooltip
-              title="随便显示随"
-              trigger={['click']}
-              visible={Mvisible}
-              onVisibleChange={this.onVisibleChange}
-            >
-              <div
-                style={{
-                  color: '#f00',
-                  background: '#f5f5f5',
-                  width: 500
-                }}
-              >
-                wwwww
-              </div>
-            </MTooltip>
-          </div>
-          <div className="test-box">
-            <Trigger
-              destroyPopupOnHide={false}
-              action={['click']}
-              popupStyle={{ position: 'absolute', background: '#f00' }}
-              overlayClassName="bg"
-              getPopupClassNameFromAlign={this.getAlign}
-              // prefixCls="busyzz-trigger-popup"
-              popup={<span>popup</span>}
-              // getPopupClassNameFromAlign={this.align}
-              popupAlign={{
-                points: ['tl', 'bl']
-              }}
-              onPopupVisibleChange={this.onPopupVisibleChange}
-              mask={true}
-              popupVisible={popupVisible}
-            >
-              <div>trigger change</div>
-            </Trigger>
-          </div>
+          <div style={{ position: 'relative', margin: 10 }}></div>
+          <div className="test-box"></div>
+          <Button onClick={this.noti}>打开</Button>
+          <Button onClick={this.openNotification}>打开antd</Button>
+          <Button onClick={this.openNotificationLeft}>打开antdLeft</Button>
+          <Button onClick={this.destroyNotification}>销毁antd</Button>
+          <Button onClick={this.destroyNotificationLeft}>销毁antdLeft</Button>
+          <Button onClick={this.createInstance}>创建实例</Button>
         </div>
       </div>
     );
