@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import ReactDom from 'react-dom';
 import classNames from 'classnames';
 import Notice from './notice';
+import { NotificationPlacement } from './index';
 import './style/index.scss';
+import Animate from 'rc-animate';
 let count = 0;
 let now = Date.now();
 function getUuid() {
@@ -12,6 +14,10 @@ interface InstanceProps {
   prefixCls?: string;
   style?: React.CSSProperties;
   getContainer?: () => HTMLElement;
+  duration?: number;
+  placement?: NotificationPlacement;
+  onClose?: (key: string) => void;
+  closeIcon?: React.ReactNode;
 }
 export interface NoticeProps {
   content: React.ReactNode | string;
@@ -20,6 +26,7 @@ export interface NoticeProps {
   duration?: number;
   style?: React.CSSProperties;
   onClose?: () => void;
+  closeIcon?: React.ReactNode;
 }
 class Notification extends Component<InstanceProps> {
   static defaultProps = {
@@ -34,17 +41,42 @@ class Notification extends Component<InstanceProps> {
     notices.push(notice);
     this.setState({ notices });
   };
+  closeNotice = (key: string) => {
+    let { notices } = this.state;
+    let { onClose } = this.props;
+    let newNotices = notices.filter(item => item.key !== key);
+    this.setState(
+      {
+        notices: newNotices
+      },
+      () => {
+        onClose && onClose(key);
+      }
+    );
+  };
   render() {
-    const { prefixCls } = this.props;
+    const { prefixCls, duration, placement, closeIcon } = this.props;
     const { notices } = this.state;
     let className = classNames({
-      [prefixCls]: true
+      [prefixCls]: true,
+      [`${prefixCls}-${placement}`]: !!placement
     });
     return (
       <div className={className}>
-        {notices.map(notice => {
-          return <Notice key={notice.key}>{notice.content}</Notice>;
-        })}
+        <Animate transitionName="alert">
+          {notices.map(notice => {
+            return (
+              <Notice
+                duration={duration}
+                key={notice.key}
+                onClose={() => this.closeNotice(notice.key)}
+                closeIcon={closeIcon}
+              >
+                {notice.content}
+              </Notice>
+            );
+          })}
+        </Animate>
       </div>
     );
   }
@@ -56,6 +88,9 @@ const newInstance = function(properties: InstanceProps, callback) {
     callback({
       notice(noticeProps: NoticeProps) {
         notificationInstance.add(noticeProps);
+      },
+      destory() {
+        div.parentNode.removeChild(div);
       }
     });
   }
