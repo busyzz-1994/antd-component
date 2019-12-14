@@ -24,7 +24,9 @@ export type NotificationPlacement =
   | 'topLeft'
   | 'topRight'
   | 'bottomRight'
-  | 'bottomLeft';
+  | 'bottomLeft'
+  | 'topCenter'
+  | 'bottomCenter';
 interface ArgsProps {
   description?: React.ReactNode;
   message?: React.ReactNode;

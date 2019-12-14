@@ -6,6 +6,8 @@ interface NoticeProps {
   duration?: number;
   onClose?: () => void;
   closeIcon?: React.ReactNode;
+  prefixCls?: string;
+  closable?: boolean;
 }
 export default class extends Component<NoticeProps> {
   timer = null;
@@ -34,8 +36,8 @@ export default class extends Component<NoticeProps> {
     }
   };
   render() {
-    const { children, closeIcon } = this.props;
-    let prefixCls = getPrefix('notification-notice');
+    let { children, closeIcon, prefixCls, closable } = this.props;
+    prefixCls = prefixCls + '-notice';
     return (
       <div
         onMouseEnter={this.closeTimer}
@@ -43,9 +45,11 @@ export default class extends Component<NoticeProps> {
         className={prefixCls}
       >
         <div className={`${prefixCls}-content`}>{children}</div>
-        <div onClick={this.close} className={`${prefixCls}-close`}>
-          {closeIcon ? closeIcon : 'X'}
-        </div>
+        {closable ? (
+          <div onClick={this.close} className={`${prefixCls}-close`}>
+            {closeIcon ? closeIcon : 'X'}
+          </div>
+        ) : null}
       </div>
     );
   }

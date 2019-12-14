@@ -18,6 +18,8 @@ interface InstanceProps {
   placement?: NotificationPlacement;
   onClose?: (key: string) => void;
   closeIcon?: React.ReactNode;
+  transitionName?: string;
+  closable?: boolean;
 }
 export interface NoticeProps {
   content: React.ReactNode | string;
@@ -30,7 +32,9 @@ export interface NoticeProps {
 }
 class Notification extends Component<InstanceProps> {
   static defaultProps = {
-    prefixCls: 'busyzz-notification'
+    prefixCls: 'busyzz-notification',
+    transitionName: 'alert',
+    closable: true
   };
   state = {
     notices: []
@@ -55,7 +59,14 @@ class Notification extends Component<InstanceProps> {
     );
   };
   render() {
-    const { prefixCls, duration, placement, closeIcon } = this.props;
+    const {
+      prefixCls,
+      duration,
+      placement,
+      closeIcon,
+      transitionName,
+      closable
+    } = this.props;
     const { notices } = this.state;
     let className = classNames({
       [prefixCls]: true,
@@ -63,7 +74,7 @@ class Notification extends Component<InstanceProps> {
     });
     return (
       <div className={className}>
-        <Animate transitionName="alert">
+        <Animate transitionName={transitionName}>
           {notices.map(notice => {
             return (
               <Notice
@@ -71,6 +82,8 @@ class Notification extends Component<InstanceProps> {
                 key={notice.key}
                 onClose={() => this.closeNotice(notice.key)}
                 closeIcon={closeIcon}
+                prefixCls={prefixCls}
+                closable={closable}
               >
                 {notice.content}
               </Notice>

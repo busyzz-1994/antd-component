@@ -14,6 +14,8 @@ import Notification from 'rc-notification';
 import _notification from 'components/Notification';
 import { CSSTransition } from 'react-transition-group';
 import Animate from 'rc-animate';
+import _message from 'components/message';
+import 'components/style/motion';
 interface IState {
   loading: boolean;
   value: number;
@@ -39,10 +41,10 @@ export default class extends Component<any, IState> {
     // console.log(align);
   };
   componentDidMount() {
-    _notification.open({
-      description: 'description设置',
-      message: '这个是具体的内容哦哦'
-    });
+    // _notification.open({
+    //   description: 'description设置',
+    //   message: '这个是具体的内容哦哦'
+    // });
   }
   onPopupVisibleChange = value => {
     this.setState({
@@ -67,10 +69,11 @@ export default class extends Component<any, IState> {
     }));
   };
   noticeAdd = () => {
-    _notification.open({
-      description: 'description设置',
-      message: '这个是具体的内容哦哦'
-    });
+    _message.open('具体内容');
+    // _notification.open({
+    //   description: 'description设置',
+    //   message: '这个是具体的内容哦哦'
+    // });
   };
   render() {
     let { value, popupVisible, Mvisible, visible } = this.state;
@@ -92,7 +95,7 @@ export default class extends Component<any, IState> {
             </Tooltip>
           </div>
           <div style={{ position: 'relative', margin: 10 }}></div>
-          <CSSTransition
+          {/* <CSSTransition
             unmountOnExit
             classNames="alert"
             in={visible}
@@ -108,10 +111,10 @@ export default class extends Component<any, IState> {
             }}
           >
             <div className="test-box">888</div>
-          </CSSTransition>
-          <Animate transitionName="alert">
+          </CSSTransition> */}
+          {/* <Animate transitionName="alert">
             {visible ? <div className="test-box">888</div> : null}
-          </Animate>
+          </Animate> */}
           <Button onClick={this.visibleChange}>visible</Button>
           <Button onClick={this.noticeAdd}>add</Button>
         </div>

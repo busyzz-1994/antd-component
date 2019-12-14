@@ -1,40 +1,23 @@
 @import '../../style/themes/default.scss';
 @import '../../style/mixin/index.scss';
 
-.#{$prefix}-notification,
-.#{$prefix}-notification-topRight {
+.#{$prefix}-message {
   position: fixed;
   top: 20px;
-  right: 20px;
   z-index: 9999;
-  max-width: 400px;
+  left: 50%;
+  transform: translateX(-50%);
 
-  &-topCenter {
-    right: auto;
-    left: 50%;
-    transform: translateX(-50%)
-  }
+  //输入的HTML
+  &-box {
+    display: flex;
 
-  // placement
-  &-topLeft {
-    left: 20px;
-  }
-
-  &-bottomLeft {
-    top: auto;
-    left: 20px;
-    bottom: 20px;
-  }
-
-  &-bottomRight {
-    top: auto;
-    bottom: 20px;
   }
 
   &-notice {
     position: relative;
     margin-bottom: 16px;
-    padding: 16px 24px;
+    padding: 8px 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border-radius: 4px;
     background: #fff;
@@ -42,9 +25,9 @@
 
 
     &-content {
-      width: 300px;
       display: flex;
       flex: 1;
+      letter-spacing: 1px;
     }
 
 
