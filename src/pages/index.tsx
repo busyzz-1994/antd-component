@@ -1,7 +1,7 @@
 import React, { Component, SFC } from 'react';
 import './index.scss';
 import 'antd/dist/antd.css';
-import { Radio, Tooltip, Button, Progress, notification } from 'antd';
+import { Radio, Tooltip, Button, Progress, notification, Modal } from 'antd';
 import MRadio from '../components/Radio';
 import Trigger from 'rc-trigger';
 import Test from './test';
@@ -16,6 +16,8 @@ import { CSSTransition } from 'react-transition-group';
 import Animate from 'rc-animate';
 import _message from 'components/message';
 import 'components/style/motion';
+import DiaLog from 'rc-dialog';
+import MModal from 'components/Modal';
 interface IState {
   loading: boolean;
   value: number;
@@ -24,6 +26,7 @@ interface IState {
   popupVisible: boolean;
   Mvisible: boolean;
   visible: boolean;
+  modalVisible: boolean;
 }
 
 export default class extends Component<any, IState> {
@@ -33,7 +36,8 @@ export default class extends Component<any, IState> {
     checked: false,
     popupVisible: true,
     Mvisible: false,
-    visible: false
+    visible: false,
+    modalVisible: false
   };
   test = React.createRef<Test>();
   div = React.createRef<HTMLDivElement>();
@@ -75,8 +79,13 @@ export default class extends Component<any, IState> {
     //   message: '这个是具体的内容哦哦'
     // });
   };
+  close = () => {
+    this.setState({
+      modalVisible: false
+    });
+  };
   render() {
-    let { value, popupVisible, Mvisible, visible } = this.state;
+    let { value, popupVisible, Mvisible, visible, modalVisible } = this.state;
     let ele = <div style={{ height: 100 }}>sdjiajsdi</div>;
     console.log(visible);
     return (
@@ -84,15 +93,6 @@ export default class extends Component<any, IState> {
         <div style={{ marginBottom: 100 }}>
           <div ref={this.div} style={{ position: 'relative', marginTop: 100 }}>
             <Button onClick={this.onForceUpdate}>click</Button>
-            <Tooltip
-              visible={true}
-              autoAdjustOverflow={true}
-              trigger="click"
-              title={'fadas'}
-              placement="topRight"
-            >
-              <div style={{ width: 600 }}>sdsdsd</div>
-            </Tooltip>
           </div>
           <div style={{ position: 'relative', margin: 10 }}></div>
           {/* <CSSTransition
@@ -117,6 +117,15 @@ export default class extends Component<any, IState> {
           </Animate> */}
           <Button onClick={this.visibleChange}>visible</Button>
           <Button onClick={this.noticeAdd}>add</Button>
+          <DiaLog title={'this is title'} visible={true}>
+            <p>first dialog</p>
+          </DiaLog>
+          <MModal visible={modalVisible} onClose={this.close}>
+            <div>das8da87</div>
+          </MModal>
+          <Button onClick={() => this.setState({ modalVisible: true })}>
+            显示modal
+          </Button>
         </div>
       </div>
     );

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Portal from './Portal';
 
 interface IProps {
+  visible?: boolean;
   children: React.ReactElement;
   getContainer?: any;
   wrapperClassName?: string;
@@ -14,7 +15,8 @@ export default class extends Component<IProps> {
       top: '0px',
       left: '0px',
       width: '100%'
-    }
+    },
+    visible: true
   };
   getParent = () => {
     let { getContainer } = this.props;
@@ -44,7 +46,9 @@ export default class extends Component<IProps> {
     return div;
   };
   render() {
-    const { children } = this.props;
-    return <Portal getContainer={this.getContainer}>{children}</Portal>;
+    const { children, visible } = this.props;
+    return (
+      visible && <Portal getContainer={this.getContainer}>{children}</Portal>
+    );
   }
 }
