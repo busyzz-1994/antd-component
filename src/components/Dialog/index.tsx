@@ -7,17 +7,29 @@ interface IDialogProps {
   prefixCls?: string;
   onClose?: () => void;
 }
-export default class extends Component<IDialogProps> {
+interface IState {
+  loaded: boolean;
+}
+export default class extends Component<IDialogProps, IState> {
   static defaultProps = {
     prefixCls: 'busyzz-dialog',
     onClose: () => {}
   };
+  constructor(props) {
+    super(props);
+    this.state = {
+      loaded: false
+    };
+  }
+  componentDidMount() {
+    this.setState({ loaded: true });
+  }
   private wrapper = React.createRef<HTMLDivElement>();
   renderMask = () => {
     const { prefixCls, visible } = this.props;
     const wrapperStyle = {} as React.CSSProperties;
     return (
-      <Animate transitionName="fade">
+      <Animate transitionAppear transitionName="fade">
         {visible ? (
           <div style={wrapperStyle} className={prefixCls + '-mask'}></div>
         ) : null}
@@ -25,13 +37,12 @@ export default class extends Component<IDialogProps> {
     );
   };
   animateLeave = () => {
-    console.log('leve');
     this.wrapper.current.style.display = 'none';
   };
   renderDialogEle = () => {
     const { prefixCls, visible } = this.props;
     return (
-      <Animate onLeave={this.animateLeave} transitionName="zoom">
+      <Animate transitionAppear onLeave={this.animateLeave} transitionName="tt">
         {visible ? (
           <div className={prefixCls}>
             <div className={prefixCls + '-content'}>
@@ -65,13 +76,13 @@ export default class extends Component<IDialogProps> {
   };
   render() {
     const { visible, prefixCls } = this.props;
+    const { loaded } = this.state;
     const wrapperStyle = {} as React.CSSProperties;
-    console.log(visible);
-    if (!visible) {
-      wrapperStyle.display = 'none';
+    if (visible) {
+      wrapperStyle.display = null;
     }
     return (
-      <Portal>
+      <Portal visible={visible}>
         <div className={prefixCls + '-root'}>
           {this.renderMask()}
           <div

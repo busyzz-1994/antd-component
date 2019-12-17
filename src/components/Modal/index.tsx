@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Dialog from '../Dialog';
+// import Dialog from 'rc-dialog';
 import { getPrefix } from '../_util';
 import './style/index.scss';
 interface IModal {

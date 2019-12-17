@@ -88,6 +88,8 @@ export default class extends Component<any, IState> {
     let { value, popupVisible, Mvisible, visible, modalVisible } = this.state;
     let ele = <div style={{ height: 100 }}>sdjiajsdi</div>;
     console.log(visible);
+    let style = {} as React.CSSProperties;
+    style.display = null;
     return (
       <div>
         <div style={{ marginBottom: 100 }}>
@@ -123,6 +125,11 @@ export default class extends Component<any, IState> {
           <MModal visible={modalVisible} onClose={this.close}>
             <div>das8da87</div>
           </MModal>
+          <div style={style}>ijdiasjidaosji</div>
+          {/* <Modal onCancel={this.close} visible={modalVisible}>
+            <div>okkk</div>
+          </Modal> */}
+          {/* <Test visible={modalVisible} /> */}
           <Button onClick={() => this.setState({ modalVisible: true })}>
             显示modal
           </Button>

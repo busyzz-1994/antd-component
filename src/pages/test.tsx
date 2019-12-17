@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-
+import Animate from 'rc-animate';
 interface Type {
   name?: string;
+  visible?: boolean;
 }
 interface IProps extends React.HTMLAttributes<HTMLDivElement>, Type {}
 export default class extends Component<IProps> {
@@ -12,9 +13,12 @@ export default class extends Component<IProps> {
     console.log('destory');
   }
   render() {
+    let { visible } = this.props;
     return (
       <div id="test">
-        <div>this is test</div>
+        <Animate transitionName="fade">
+          {visible ? <div>this is test</div> : null}
+        </Animate>
       </div>
     );
   }

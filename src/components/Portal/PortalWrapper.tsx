@@ -16,8 +16,11 @@ export default class extends Component<IProps> {
       left: '0px',
       width: '100%'
     },
-    visible: true
+    visible: false
   };
+  componentDidMount() {
+    console.log('did mount ');
+  }
   getParent = () => {
     let { getContainer } = this.props;
     if (typeof getContainer === 'string') {
@@ -45,10 +48,20 @@ export default class extends Component<IProps> {
     if (parent) parent.appendChild(div);
     return div;
   };
+  //将生产的元素保留在文档中
+  _component = null;
   render() {
     const { children, visible } = this.props;
-    return (
-      visible && <Portal getContainer={this.getContainer}>{children}</Portal>
-    );
+    if (visible || this._component) {
+      return (
+        <Portal
+          ref={com => (this._component = com)}
+          getContainer={this.getContainer}
+        >
+          {children}
+        </Portal>
+      );
+    }
+    return null;
   }
 }
