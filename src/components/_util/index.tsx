@@ -27,3 +27,32 @@ export const throttle = (fn, time = 200) => {
     }
   };
 };
+//获取滚动条的长度
+export const getScroll = (
+  node: HTMLElement | Window = window,
+  top: boolean = true
+) => {
+  return node[`page${top ? 'Y' : 'X'}Offset`];
+};
+//获取元素到文档的 上下偏移量
+export const getOffset = (node: Element): { top: number; left: number } => {
+  let rect = node.getBoundingClientRect();
+  let res = {
+    top: 0,
+    left: 0
+  };
+  res.top = rect.top + getScroll();
+  res.left = rect.left + getScroll(undefined, false);
+  return res;
+};
+export function setTransform(
+  node: HTMLElement,
+  value: string,
+  name: string = ''
+) {
+  const style = node.style;
+  ['Webkit', 'Moz', 'Ms', 'ms', 'O'].forEach(prefix => {
+    style[`${prefix}Transform${name}`] = value;
+  });
+  style[`transform${name}`] = value;
+}

@@ -27,20 +27,22 @@ interface IState {
   Mvisible: boolean;
   visible: boolean;
   modalVisible: boolean;
+  antdModalVisible: boolean;
 }
-
 export default class extends Component<any, IState> {
   state = {
     loading: false,
     value: 1,
     checked: false,
     popupVisible: true,
-    Mvisible: false,
+    Mvisible: true,
     visible: false,
-    modalVisible: false
+    modalVisible: false,
+    antdModalVisible: false
   };
   test = React.createRef<Test>();
   div = React.createRef<HTMLDivElement>();
+  canfont = React.createRef<HTMLDivElement>();
   align = align => {
     // console.log(align);
   };
@@ -57,12 +59,12 @@ export default class extends Component<any, IState> {
   };
   onForceUpdate = () => {
     let res = window.getComputedStyle(this.div.current, null);
-    console.log(res);
   };
-  componentDidUpdate() {}
+  componentDidUpdate() {
+    console.log(this.canfont.current);
+  }
   onKeyBorad = e => {
     let keyCode = e.keyCode;
-    // console.log(keyCode);
   };
   getAlign = val => {
     console.log(val);
@@ -84,10 +86,24 @@ export default class extends Component<any, IState> {
       modalVisible: false
     });
   };
+  onOK = () => {
+    this.setState({
+      modalVisible: false
+    });
+  };
+  confirm = () => {
+    MModal.confirm();
+  };
   render() {
-    let { value, popupVisible, Mvisible, visible, modalVisible } = this.state;
+    let {
+      value,
+      popupVisible,
+      Mvisible,
+      visible,
+      modalVisible,
+      antdModalVisible
+    } = this.state;
     let ele = <div style={{ height: 100 }}>sdjiajsdi</div>;
-    console.log(visible);
     let style = {} as React.CSSProperties;
     style.display = null;
     return (
@@ -117,22 +133,27 @@ export default class extends Component<any, IState> {
           {/* <Animate transitionName="alert">
             {visible ? <div className="test-box">888</div> : null}
           </Animate> */}
-          <Button onClick={this.visibleChange}>visible</Button>
-          <Button onClick={this.noticeAdd}>add</Button>
-          <DiaLog title={'this is title'} visible={true}>
-            <p>first dialog</p>
-          </DiaLog>
-          <MModal visible={modalVisible} onClose={this.close}>
-            <div>das8da87</div>
-          </MModal>
-          <div style={style}>ijdiasjidaosji</div>
-          {/* <Modal onCancel={this.close} visible={modalVisible}>
-            <div>okkk</div>
-          </Modal> */}
-          {/* <Test visible={modalVisible} /> */}
           <Button onClick={() => this.setState({ modalVisible: true })}>
             显示modal
           </Button>
+          <Button onClick={() => this.setState({ antdModalVisible: true })}>
+            显示antd-modal
+          </Button>
+          <Button onClick={this.confirm}>confirm 的显示</Button>
+          <Button onClick={this.visibleChange}>visible</Button>
+          <Button onClick={this.noticeAdd}>add</Button>
+          <MModal
+            title={'titile'}
+            visible={modalVisible}
+            onClose={this.close}
+            onOk={this.onOK}
+          >
+            <div>das8da87</div>
+          </MModal>
+          <Modal onCancel={this.close} visible={antdModalVisible}>
+            <div>okkk</div>
+          </Modal>
+          {/* <Test visible={modalVisible} /> */}
         </div>
       </div>
     );

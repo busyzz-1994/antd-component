@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Portal from './Portal';
-
 interface IProps {
   visible?: boolean;
   children: React.ReactElement;

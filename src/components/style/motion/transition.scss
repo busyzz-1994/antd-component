@@ -19,24 +19,25 @@
   transition: opacity 300ms;
 }
 
-.tt-enter {
+.buzz-enter,
+.buzz-appear {
   opacity: 0;
-  transform: scale(0.7);
+  transform: scale(0.5);
 }
 
-.tt-enter-active {
+.buzz-enter-active,
+.buzz-appear-active {
   opacity: 1;
   transform: scale(1);
   transition: opacity 300ms, transform 300ms;
 }
 
-.tt-leave {
+.buzz-leave {
   opacity: 1;
   transform: scale(1);
-
 }
 
-.tt-leave-active {
+.buzz-leave-active {
   opacity: 0;
   transform: scale(0.7);
   transition: opacity 300ms, transform 300ms;
