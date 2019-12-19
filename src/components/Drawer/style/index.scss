@@ -1,0 +1,131 @@
+@import '../../style/themes/default.scss';
+@import '../../style/mixin/index.scss';
+
+.#{$prefix}-drawer-sildeFromRight {
+  right: 0;
+  top: 0;
+  height: 100%;
+}
+
+.#{$prefix}-drawer-slideFromLeft {
+  left: 0;
+  top: 0;
+  height: 100%;
+}
+
+.#{$prefix}-drawer-slideFromBottom {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.#{$prefix}-drawer {
+  position: absolute;
+  background: #ffffff;
+
+  &-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+
+    &:hover {
+      .#{$prefix}-modal-close-icon {
+        color: #000;
+      }
+    }
+
+    &-icon {
+      display: block;
+      height: 54px;
+      line-height: 54px;
+      width: 54px;
+      text-align: center;
+      transition: 0.3s;
+    }
+  }
+
+  &-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid $normal-color;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  &-body {
+    padding: 24px;
+  }
+
+  &-footer {
+    padding: 10px 16px;
+    border-top: 1px solid $normal-color;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+    &-default {
+      display: flex;
+      justify-content: flex-end;
+
+      >button:first-child {
+        margin-right: 8px;
+      }
+    }
+  }
+
+  //遮罩
+  &-mask {
+    @extend .#{$prefix}-drawer-wrapper;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 999 !important;
+  }
+
+  //modal容器
+  &-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    z-index: 1000;
+  }
+}
+
+//confrim样式的重置
+.#{$prefix}-modal-confirm {
+  width: 420px;
+
+  &-children {
+    &-info {
+      display: flex;
+    }
+
+    &-tip {
+      margin-left: 10px;
+
+      &-title {
+        color: rgba(0, 0, 0, 0.85);
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 22px;
+      }
+
+      &-desc {
+        margin-bottom: 20px;
+      }
+    }
+
+    &-handler {
+      display: flex;
+      justify-content: flex-end;
+
+      >button:first-child {
+        margin-right: 8px;
+      }
+    }
+  }
+}

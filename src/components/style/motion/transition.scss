@@ -19,6 +19,7 @@
   transition: opacity 300ms;
 }
 
+//modal
 .buzz-enter,
 .buzz-appear {
   opacity: 0;
@@ -41,4 +42,63 @@
   opacity: 0;
   transform: scale(0.7);
   transition: opacity 300ms, transform 300ms;
+}
+
+//drawer
+//RIGHT
+.slideFromRight-enter,
+.slideFromRight-appear {
+  opacity: 0.5;
+  transform: translate3d(100%, 0, 0);
+}
+
+.slideFromLeft-enter,
+.slideFromLeft-appear {
+  opacity: 0.5;
+  transform: translate3d(-100%, 0, 0);
+}
+
+//Bottom
+.slideFromBottom-enter,
+.slideFromBottom-appear {
+  opacity: 0.5;
+  transform: translate3d(0, 100%, 0);
+}
+
+.slideFromRight-enter-active,
+.slideFromRight-appear-active,
+.slideFromLeft-enter-active,
+.slideFromLeft-appear-active,
+.slideFromBottom-enter-active,
+.slideFromBottom-appear-active {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.slideFromRight-leave,
+.slideFromLeft-leave,
+.slideFromBottom-leave {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.slideFromRight-leave-active {
+  opacity: 0.5;
+  transform: translate3d(100%, 0, 0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+//LEFT
+.slideFromLeft-leave-active {
+  opacity: 0.5;
+  transition: opacity 300ms, transform 300ms;
+  transform: translate3d(-100%, 0, 0);
+}
+
+//Bottom
+.slideFromBottom-leave-active {
+  opacity: 0.5;
+  transition: opacity 300ms, transform 300ms;
+  transform: translate3d(0, 100%, 0);
 }

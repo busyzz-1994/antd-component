@@ -20,6 +20,8 @@ interface IModal {
   keyboard?: boolean;
   onOk?: () => void;
   destroyOnClose?: boolean;
+  mask?: boolean;
+  maskClosable?: boolean;
 }
 type MousePosition = { x: number; y: number } | null;
 let mousePosition: MousePosition = null;
@@ -36,6 +38,7 @@ function getClickPosition(e: MouseEvent) {
 addEventListener(document.documentElement, 'click', getClickPosition);
 export default class extends Component<IModal> {
   static confirm: (props: ModalFunc) => void;
+  static info: (props: ModalFunc) => void;
   static defaultProps = {
     prefixCls: getPrefix('modal'),
     onClose: () => {},
@@ -45,16 +48,14 @@ export default class extends Component<IModal> {
     cancelText: '取消',
     okText: '确认',
     confirmLoading: false,
-    keyboard: true
-  };
-  close = () => {
-    const { onClose } = this.props;
-    onClose();
+    keyboard: true,
+    mask: true,
+    maskClosable: true
   };
   render() {
     const { children, ...rest } = this.props;
     return (
-      <Dialog {...rest} mousePosition={mousePosition} onClose={this.close}>
+      <Dialog {...rest} mousePosition={mousePosition}>
         {children}
       </Dialog>
     );

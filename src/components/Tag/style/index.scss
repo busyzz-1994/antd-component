@@ -1,0 +1,31 @@
+@import '../../style/themes/default.scss';
+@import '../../style/mixin/index.scss';
+
+@mixin makeColor {
+  @each $color in $preset-colors {
+    .#{$prefix}-tag-color-#{$color} {
+      border-color: #{$color+'-6'};
+      background-color: #{$color+'-3'};
+    }
+  }
+}
+
+.#{$prefix}-tag {
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  background: $white-2;
+  display: inline-block;
+  padding: 0 8px;
+
+  &-closer {
+    font-size: 12px;
+    padding-left: 4px;
+    cursor: pointer;
+  }
+
+  &-color {
+    color: $white;
+  }
+
+  @include makeColor();
+}

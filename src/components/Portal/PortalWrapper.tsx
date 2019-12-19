@@ -17,9 +17,6 @@ export default class extends Component<IProps> {
     },
     visible: false
   };
-  componentDidMount() {
-    console.log('did mount ');
-  }
   getParent = () => {
     let { getContainer } = this.props;
     if (typeof getContainer === 'string') {

@@ -19,10 +19,8 @@ export default class extends Component<IProps> {
     }
   }
   render() {
-    console.log('enter protal');
-    if (this.container) {
-      return createPortal(this.props.children, this.container);
-    }
-    return null;
+    return this.container
+      ? createPortal(this.props.children, this.container)
+      : null;
   }
 }

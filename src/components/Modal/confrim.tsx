@@ -14,24 +14,41 @@ export interface ModalFunc {
   width?: number;
   onCancel?: () => void;
   onOk?: () => void;
+  type?: 'info' | 'warn' | 'success';
 }
 interface DialogFunc extends ModalFunc {
   visible: boolean;
 }
 const noop = () => {};
 const ConfirmDialog = (props: DialogFunc) => {
-  let { title, content, onCancel, onOk = noop, visible } = props;
+  let {
+    title,
+    content,
+    onCancel,
+    onOk,
+    visible,
+    type = 'warn',
+    mask = true,
+    maskClosable = false
+  } = props;
   const prefixCls = getPrefix('modal-confirm');
+  const IconMap = {
+    warn: <div>W</div>,
+    info: <div>In</div>
+  };
+  const icon = IconMap[type];
   return (
     <Dialog
       prefixCls={prefixCls}
       footer={null}
       visible={visible}
       onClose={onCancel}
+      mask={mask}
+      maskClosable={maskClosable}
     >
       <div className={`${prefixCls}-children`}>
         <div className={`${prefixCls}-children-info`}>
-          <div className={`${prefixCls}-children-icon`}>?</div>
+          <div className={`${prefixCls}-children-icon`}>{icon}</div>
           <div className={`${prefixCls}-children-tip`}>
             <div className={`${prefixCls}-children-tip-title`}>{title}</div>
             <div className={`${prefixCls}-children-tip-desc`}>{content}</div>

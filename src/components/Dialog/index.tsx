@@ -20,6 +20,11 @@ interface IDialogProps {
   keyboard?: boolean;
   onOk?: () => void;
   destroyOnClose?: boolean;
+  mask?: boolean;
+  maskClosable?: boolean;
+  transitionName?: string;
+  dialogClassName?: string;
+  dialogStyle?: React.CSSProperties;
 }
 interface IState {
   destroyOnClose: boolean;
@@ -27,6 +32,10 @@ interface IState {
 export default class extends Component<IDialogProps, IState> {
   static defaultProps = {
     prefixCls: 'busyzz-dialog',
+    transitionName: 'buzz',
+    dialogStyle: {},
+    mask: true,
+    maskClosable: true,
     onClose: () => {},
     afterClose: () => {}
   };
@@ -52,8 +61,9 @@ export default class extends Component<IDialogProps, IState> {
     }
   }
   renderMask = () => {
-    const { prefixCls, visible } = this.props;
+    const { prefixCls, visible, mask } = this.props;
     const wrapperStyle = {} as React.CSSProperties;
+    if (!mask) return null;
     return (
       <Animate transitionAppear transitionName="fade">
         {visible ? (
@@ -61,9 +71,6 @@ export default class extends Component<IDialogProps, IState> {
         ) : null}
       </Animate>
     );
-  };
-  saveRef = (name: string) => (node: any) => {
-    this[name] = node;
   };
   animateLeave = () => {
     this.wrapper.current.style.display = 'none';
@@ -114,15 +121,26 @@ export default class extends Component<IDialogProps, IState> {
     return title && <div className={prefixCls + '-header'}>header</div>;
   };
   renderDialogEle = () => {
-    const { prefixCls, visible, children } = this.props;
+    const {
+      prefixCls,
+      visible,
+      dialogClassName,
+      dialogStyle,
+      children,
+      transitionName
+    } = this.props;
     return (
       <Animate
         transitionAppear
         onLeave={this.animateLeave}
-        transitionName="buzz"
+        transitionName={transitionName}
       >
         {visible ? (
-          <div className={prefixCls} ref={this.dialog}>
+          <div
+            style={dialogStyle}
+            className={prefixCls + ' ' + dialogClassName}
+            ref={this.dialog}
+          >
             <div className={prefixCls + '-content'}>
               {this.renderCloser()}
               {this.renderHeader()}
@@ -136,8 +154,11 @@ export default class extends Component<IDialogProps, IState> {
   };
   //点击wrapper
   wrapperClick = e => {
+    let { maskClosable } = this.props;
+    if (!maskClosable) return;
     if (
       e.target === e.currentTarget ||
+      //Animate 组件加了一层span标签
       e.target.parentNode === e.currentTarget
     ) {
       this.close();
