@@ -92,7 +92,23 @@ export default class extends Component<any, IState> {
     });
   };
   confirm = () => {
-    MModal.confirm();
+    MModal.confirm({
+      title: 'modal confirm',
+      content: <div>modal content</div>,
+      onCancel: () => {
+        console.log('okkkk');
+      },
+      onOk: () => {
+        console.log('onOk');
+      }
+    });
+  };
+  antdConfirm = () => {
+    Modal.confirm({
+      onCancel: () => {
+        console.log('okkk');
+      }
+    });
   };
   render() {
     let {
@@ -140,6 +156,7 @@ export default class extends Component<any, IState> {
             显示antd-modal
           </Button>
           <Button onClick={this.confirm}>confirm 的显示</Button>
+          <Button onClick={this.antdConfirm}>antdConfirm 的显示</Button>
           <Button onClick={this.visibleChange}>visible</Button>
           <Button onClick={this.noticeAdd}>add</Button>
           <MModal
@@ -150,7 +167,11 @@ export default class extends Component<any, IState> {
           >
             <div>das8da87</div>
           </MModal>
-          <Modal onCancel={this.close} visible={antdModalVisible}>
+          <Modal
+            onCancel={() => this.setState({ antdModalVisible: false })}
+            visible={antdModalVisible}
+            destroyOnClose={true}
+          >
             <div>okkk</div>
           </Modal>
           {/* <Test visible={modalVisible} /> */}

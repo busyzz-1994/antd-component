@@ -3,6 +3,7 @@ import Dialog from '../Dialog';
 import { getPrefix } from '../_util';
 import './style/index.scss';
 import addEventListener from 'rc-util/lib/Dom/addEventListener';
+import { ModalFunc } from './confrim';
 interface IModal {
   visible: boolean;
   children?: React.ReactElement;
@@ -18,6 +19,7 @@ interface IModal {
   confirmLoading?: boolean;
   keyboard?: boolean;
   onOk?: () => void;
+  destroyOnClose?: boolean;
 }
 type MousePosition = { x: number; y: number } | null;
 let mousePosition: MousePosition = null;
@@ -33,7 +35,7 @@ function getClickPosition(e: MouseEvent) {
 }
 addEventListener(document.documentElement, 'click', getClickPosition);
 export default class extends Component<IModal> {
-  static confirm: () => void;
+  static confirm: (props: ModalFunc) => void;
   static defaultProps = {
     prefixCls: getPrefix('modal'),
     onClose: () => {},

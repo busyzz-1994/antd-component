@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Portal from '../Portal/PortalWrapper';
-// import Portal from 'rc-util/lib/PortalWrapper';
 import { Button } from 'antd';
 import Animate from 'rc-animate';
 import { getOffset, setTransform } from '../_util';
@@ -20,9 +19,10 @@ interface IDialogProps {
   confirmLoading?: boolean;
   keyboard?: boolean;
   onOk?: () => void;
+  destroyOnClose?: boolean;
 }
 interface IState {
-  loaded: boolean;
+  destroyOnClose: boolean;
 }
 export default class extends Component<IDialogProps, IState> {
   static defaultProps = {
@@ -30,12 +30,6 @@ export default class extends Component<IDialogProps, IState> {
     onClose: () => {},
     afterClose: () => {}
   };
-  constructor(props) {
-    super(props);
-    this.state = {
-      loaded: false
-    };
-  }
   private wrapper = React.createRef<HTMLDivElement>();
   private dialog = React.createRef<HTMLDivElement>();
   componentDidUpdate() {

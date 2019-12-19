@@ -4,69 +4,83 @@ import { getPrefix } from '../_util';
 import ReactDOM from 'react-dom';
 import './style/index.scss';
 import { Button } from 'antd';
-interface IModal {
-  visible?: boolean;
-  children?: React.ReactElement;
-  prefixCls?: string;
-  onClose?: () => void;
-  closable?: boolean;
-  footer?: React.ReactNode | null;
-  title?: React.ReactNode;
-  afterClose?: () => void;
-  bodyStyle?: React.CSSProperties;
+export interface ModalFunc {
   cancelText?: string;
+  content?: React.ReactNode;
+  mask?: boolean;
+  maskClosable?: boolean;
   okText?: string;
-  confirmLoading?: boolean;
-  keyboard?: boolean;
+  title?: React.ReactNode;
+  width?: number;
+  onCancel?: () => void;
   onOk?: () => void;
 }
-
-// class Modal extends Component<IModal> {
-//   static defaultProps = {
-//     prefixCls: getPrefix('modal-confirm'),
-//     onClose: () => {},
-//     closable: true,
-//     afterClose: () => {},
-//     onOk: () => {},
-//     cancelText: '取消',
-//     okText: '确认',
-//     confirmLoading: false,
-//     keyboard: true
-//   };
-//   close = () => {
-//     const { onClose } = this.props;
-//     onClose();
-//   };
-//   render() {
-//     const { children, ...rest } = this.props;
-//     return (
-//       <Dialog {...rest} onClose={this.close}>
-//         {children}
-//       </Dialog>
-//     );
-//   }
-// }
-const ConfirmDialog = IModal => {
+interface DialogFunc extends ModalFunc {
+  visible: boolean;
+}
+const noop = () => {};
+const ConfirmDialog = (props: DialogFunc) => {
+  let { title, content, onCancel, onOk = noop, visible } = props;
   const prefixCls = getPrefix('modal-confirm');
   return (
-    <Dialog prefixCls={prefixCls} footer={null} visible={true}>
+    <Dialog
+      prefixCls={prefixCls}
+      footer={null}
+      visible={visible}
+      onClose={onCancel}
+    >
       <div className={`${prefixCls}-children`}>
         <div className={`${prefixCls}-children-info`}>
           <div className={`${prefixCls}-children-icon`}>?</div>
           <div className={`${prefixCls}-children-tip`}>
-            <div className={`${prefixCls}-children-tip-title`}>title</div>
-            <div className={`${prefixCls}-children-tip-desc`}>desc</div>
+            <div className={`${prefixCls}-children-tip-title`}>{title}</div>
+            <div className={`${prefixCls}-children-tip-desc`}>{content}</div>
           </div>
         </div>
         <div className={`${prefixCls}-children-handler`}>
-          <Button>csss</Button>
+          <Button onClick={onOk} type="primary">
+            确认
+          </Button>
+          <Button onClick={onCancel}>取消</Button>
         </div>
       </div>
     </Dialog>
   );
 };
-export default () => {
+export default (props: ModalFunc) => {
+  let visible = true;
+  const { onCancel = noop, onOk = noop } = props;
   const div = document.createElement('div');
   document.body.append(div);
-  ReactDOM.render(<ConfirmDialog />, div);
+  function close() {
+    visible = false;
+    render();
+    destory();
+  }
+  function cancel() {
+    close();
+    onCancel();
+  }
+  function ok() {
+    close();
+    onOk();
+  }
+  function destory() {
+    setTimeout(() => {
+      ReactDOM.unmountComponentAtNode(div);
+      div.parentNode.removeChild(div);
+    }, 500);
+  }
+  function render() {
+    ReactDOM.render(
+      <ConfirmDialog
+        {...props}
+        visible={visible}
+        onCancel={cancel}
+        onOk={ok}
+      />,
+      div
+    );
+  }
+  render();
 };

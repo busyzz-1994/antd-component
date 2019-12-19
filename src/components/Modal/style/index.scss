@@ -89,12 +89,29 @@
   &-children {
     &-info {
       display: flex;
+    }
+
+    &-tip {
+      margin-left: 10px;
 
       &-title {
         color: rgba(0, 0, 0, 0.85);
         font-weight: 500;
         font-size: 16px;
         line-height: 22px;
+      }
+
+      &-desc {
+        margin-bottom: 20px;
+      }
+    }
+
+    &-handler {
+      display: flex;
+      justify-content: flex-end;
+
+      >button:first-child {
+        margin-right: 8px;
       }
     }
   }
