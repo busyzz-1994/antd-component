@@ -1,4 +1,10 @@
+/*
+ * @Author: busyzz
+ * @Date: 2019-11-11 11:09:33
+ * @Description:
+ */
 export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+export type BreakpointMapBase<T> = Partial<Record<Breakpoint, T>>;
 export type BreakpointMap = Partial<Record<Breakpoint, number>>;
 export type BreakpointMapString = Partial<Record<Breakpoint, string>>;
 export const responsiveList: Array<Breakpoint> = [

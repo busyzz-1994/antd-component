@@ -1,0 +1,90 @@
+@import '../../style/themes/default.scss';
+@import '../../style/mixin/index.scss';
+
+.#{$prefix}-timeline,
+.#{$prefix}-timeline-left {
+  &-item {
+    position: relative;
+
+    &-dot {
+      position: absolute;
+
+      &-default {
+        width: 10px;
+        height: 10px;
+        border: 2px solid $primary-color;
+        border-radius: 50%;
+      }
+    }
+
+    &-line {
+      position: absolute;
+      top: 10px;
+      left: 4px;
+      height: calc(100% - 10px);
+      border-left: 2px solid $border-color;
+    }
+
+    &-content {
+      margin-left: 18px;
+      position: relative;
+      top: -6px;
+      padding-bottom: 20px;
+    }
+
+    &-last {
+      .#{$prefix}-timeline-item {
+        &-line {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &-right {
+    .#{$prefix}-timeline {
+      &-item {
+        &-dot {
+          position: absolute;
+          right: 0;
+        }
+
+        &-line {
+          left: auto;
+          right: 4px;
+        }
+
+        &-content {
+          text-align: right;
+          margin-right: 18px;
+        }
+      }
+    }
+  }
+
+  &-mid {
+    .#{$prefix}-timeline {
+      &-item {
+        &-dot {
+          left: calc(50% - 5px);
+        }
+
+        &-line {
+          left: calc(50% - 1px);
+        }
+
+        &-content {
+          &-left {
+            width: calc(50% - 18px);
+            text-align: right;
+            margin-left: 0;
+          }
+
+          &-right {
+            margin-left: calc(50% + 18px);
+          }
+        }
+      }
+    }
+  }
+}

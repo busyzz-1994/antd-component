@@ -1,0 +1,70 @@
+@import '../../style/themes/default.scss';
+@import '../../style/mixin/index.scss';
+$baseCls:#{$prefix}-descriptions;
+
+.#{$prefix}-descriptions {
+  &-title {
+    margin-bottom: 20px;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  &-view {
+    overflow: hidden;
+
+    table {
+      width: 100%;
+    }
+
+    tr {
+      td {
+        padding: 16px 24px;
+      }
+    }
+  }
+
+  &-small {
+    td {
+      padding: 8px 16px !important;
+    }
+  }
+
+  &-large {
+    td {
+      padding: 24px 32px !important;
+    }
+  }
+
+  &-item {
+    &-label {
+      background: #fafafa;
+    }
+  }
+
+  &-bordered {
+    .#{$prefix}-descriptions {
+      &-view {
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+
+        tr {
+          border-bottom: 1px solid $border-color;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          td {
+            border-right: 1px solid $border-color;
+
+            &:last-child {
+              border-right: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
