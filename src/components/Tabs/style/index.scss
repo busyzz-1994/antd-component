@@ -23,6 +23,13 @@
       display: inline-block;
       border-top: 1px solid #f00;
       margin-right: 32px;
+      cursor: pointer;
+      transition: all .3s;
+
+      &.active,
+      &:hover {
+        color: $primary-color;
+      }
     }
 
     &-ink {
@@ -34,6 +41,25 @@
       background: $primary-color;
       z-index: 99;
       transition: all 0.3s;
+    }
+  }
+
+  //content
+  &-content {
+    overflow: hidden;
+    white-space: nowrap;
+
+    &-wrapper {
+      @include clearfix();
+    }
+
+    &-item {
+      display: inline-block;
+      opacity: 0;
+
+      &.active {
+        opacity: 1;
+      }
     }
   }
 }
