@@ -1,0 +1,23 @@
+@import '../../style/themes/default.scss';
+
+.#{$prefix}-avatar {
+  border-radius: 50%;
+  background: #ccc;
+  color: $white;
+  font-size: 18px;
+  text-align: center;
+  position: relative;
+  white-space: nowrap;
+  display: inline-block;
+
+  &-square {
+    border-radius: $border-radius;
+  }
+
+  &-string {
+    display: inline-block;
+    position: absolute;
+    left: 50%;
+    // transform-origin: 0 center;
+  }
+}
