@@ -56,3 +56,12 @@ export function setTransform(
   });
   style[`transform${name}`] = value;
 }
+export function toggleArray(arr: Array<any>, target) {
+  let index = arr.indexOf(target);
+  if (index === -1) {
+    return [...arr, target];
+  }
+  let newArr = [...arr];
+  newArr.splice(index, 1);
+  return newArr;
+}

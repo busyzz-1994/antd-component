@@ -39,7 +39,7 @@
 }
 
 //设置点击后的动画环绕效果
-@mixin clickedEffect($border-color:$primary-color) {
+@mixin clickedEffect($border-color:$primary-color, $animationCount:1) {
   @keyframes borderEffect {
     0% {
       transform: scale(1);
@@ -58,5 +58,5 @@
   content:'';
   border:1px solid $border-color;
   border-radius: $border-radius-xs;
-  animation: borderEffect 0.3s ease-in-out;
+  animation: borderEffect 0.3s ease-in-out $animationCount;
 }

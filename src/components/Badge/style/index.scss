@@ -1,0 +1,64 @@
+@import '../../style/themes/default.scss';
+@import '../../style/mixin/index.scss';
+
+.#{$prefix}-badge {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  z-index: 9;
+  transform: translate(50%, -50%);
+  display: inline-block;
+
+  &-text {
+    margin-left: 8px;
+  }
+
+  @keyframes borderEffectc {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+      border-width: 1px;
+    }
+
+    100% {
+      transform: scale(1.6);
+      opacity: 0;
+      border-width: 2px;
+    }
+  }
+
+  &-dot {
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background: #f00;
+    border-color: #f00;
+
+    &.active {
+      &::after {
+        @include absWithFather();
+        content: '';
+        border: 1px solid #f00;
+        border-color: inherit;
+        border-radius: 50%;
+        animation: borderEffectc 1s ease-in-out infinite;
+      }
+    }
+  }
+
+  &-count {
+    height: 20px;
+    line-height: 20px;
+    border-radius: 10px;
+    color: $white;
+    font-size: 12px;
+    padding: 0 7px;
+    background: #f00;
+
+  }
+
+  &-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+}

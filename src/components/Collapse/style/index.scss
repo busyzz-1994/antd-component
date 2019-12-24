@@ -1,0 +1,28 @@
+@import '../../style/themes/default.scss';
+@import '../../style/mixin/index.scss';
+
+.#{$prefix}-collapse {
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  overflow: hidden;
+
+  &-item {
+    overflow: hidden;
+    border-bottom: 1px solid $border-color;
+
+    &-header {
+      padding: 12px 16px;
+      background: #f5f5f5;
+      cursor: pointer;
+    }
+
+    &-body {
+      padding: 12px 16px;
+      border-top: 1px solid $border-color;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
