@@ -102,3 +102,24 @@
   transition: opacity 300ms, transform 300ms;
   transform: translate3d(0, 100%, 0);
 }
+
+//收缩高度
+.collapseHeight-enter,
+.collapseHeight-appear {
+  transform: scaleY(0);
+  transition: all 300ms;
+}
+
+.collapseHeight-enter-active,
+.collapseHeight-appear-active {
+  transform: scaleY(1);
+}
+
+.collapseHeight-leave {
+  transform: scaleY(1);
+  transition: all 300ms;
+}
+
+.collapseHeight-leave-active {
+  transform: scaleY(0);
+}

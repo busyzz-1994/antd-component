@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { getPrefix, toggleArray } from '../_util';
 import './style/index.scss';
 import Panel from './Panel';
+import classNames from 'classnames';
 const prefixCls = getPrefix('collapse');
 interface IProps {
   defaultActiveKey?: Array<string | number>;
   activeKey?: Array<string | number>;
+  expandIconPosition?: 'left' | 'right';
 }
 interface IState {
   activeKey?: Array<string | number>;
@@ -19,6 +21,9 @@ export default class extends Component<IProps, IState> {
       };
     }
     return null;
+  };
+  static defaultProps: Partial<IProps> = {
+    expandIconPosition: 'right'
   };
   constructor(props) {
     super(props);
@@ -38,9 +43,12 @@ export default class extends Component<IProps, IState> {
   };
   render() {
     const { activeKey } = this.state;
-    const { children } = this.props;
+    const { children, expandIconPosition } = this.props;
+    const classes = classNames(prefixCls, {
+      [`${prefixCls}-${expandIconPosition}`]: true
+    });
     return (
-      <div className={prefixCls}>
+      <div className={classes}>
         {React.Children.map(children, (child, index) => {
           //@ts-ignore
           let { key } = child;
