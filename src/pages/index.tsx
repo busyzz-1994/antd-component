@@ -5,6 +5,7 @@ import { Tabs, Button, Timeline } from 'antd';
 import MCollapse from 'components/Collapse';
 import Animate from 'rc-animate';
 import 'components/style/motion/index';
+import MCarousel from 'components/Carousel';
 const { Panel } = MCollapse;
 export default class extends Component<any, any> {
   state = {
@@ -12,7 +13,8 @@ export default class extends Component<any, any> {
     visible: true,
     index: 0,
     activePage: 0,
-    activeKey: ['1']
+    activeKey: ['1', '2'],
+    marginTop: 100
   };
   collapseChange = activeKey => {
     this.setState({
@@ -20,25 +22,27 @@ export default class extends Component<any, any> {
     });
   };
   render() {
-    const { activeKey, visible } = this.state;
+    const { activeKey, visible, marginTop } = this.state;
     return (
       <div>
         <div style={{ marginBottom: 100 }}>
-          <MCollapse activeKey={activeKey}>
+          {/* <MCollapse activeKey={activeKey}>
             <Panel header="tab_1" onChange={this.collapseChange} key="1">
               <div>dusudu</div>
-              <div style={{ marginTop: '100px' }}>dusudu</div>
+              <div style={{ marginTop }}>dusudu</div>
             </Panel>
             <Panel header="tab_1" onChange={this.collapseChange} key="2">
               <div>xixi</div>
               <div style={{ marginTop: '100px' }}>dusudu</div>
             </Panel>
-          </MCollapse>
+          </MCollapse> */}
         </div>
-
-        <Button
-          onClick={() => this.setState(prev => ({ visible: !prev.visible }))}
-        >
+        <MCarousel>
+          <div style={{ height: 100 }}>sdasdas</div>
+          <div>ppppp</div>
+          <div>dsad4545</div>
+        </MCarousel>
+        <Button onClick={() => this.setState({ marginTop: 200 })}>
           onclick
         </Button>
       </div>

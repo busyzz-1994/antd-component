@@ -15,22 +15,50 @@ export interface IPanel {
   header?: React.ReactNode;
   children?: React.ReactNode;
 }
-export default class extends Component<IPanel> {
+interface IState {
+  maxHeight?: number;
+}
+export default class extends Component<IPanel, IState> {
   static defaultProps = {
     showArrow: true
   };
+  state = {
+    maxHeight: 0
+  };
+  box = React.createRef<HTMLDivElement>();
+  componentDidMount() {
+    this.setMaxHeight();
+  }
+  componentDidUpdate(prevProps, prevState) {
+    let height = this.getBoxHeight();
+    let { maxHeight } = prevState;
+    if (height !== maxHeight) {
+      this.setMaxHeight();
+    }
+  }
+  setMaxHeight = () => {
+    let maxHeight = this.getBoxHeight();
+    this.setState({ maxHeight });
+  };
+  getBoxHeight = () => {
+    try {
+      let height = this.box.current.offsetHeight;
+      return height;
+    } catch (e) {}
+  };
   renderBody = () => {
+    const { maxHeight } = this.state;
     const { active, children } = this.props;
-    let hideBodyStyle: React.CSSProperties = {
-      padding: 0,
-      height: 0,
-      border: 'none'
+    const bodyHeight = active ? maxHeight : 0;
+    let bodyStyle: React.CSSProperties = {
+      height: bodyHeight,
+      borderWidth: active ? '1px' : 0
     };
-    let showBodyStyle: React.CSSProperties = {};
-    let bodyStyle = active ? showBodyStyle : hideBodyStyle;
     return (
       <div style={bodyStyle} className={prefixCls + '-item-body'}>
-        {children}
+        <div ref={this.box} className={prefixCls + '-item-body-box'}>
+          {children}
+        </div>
       </div>
     );
   };

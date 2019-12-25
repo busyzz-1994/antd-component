@@ -1,0 +1,48 @@
+@import '../../style/themes/default.scss';
+@import '../../style/mixin/index.scss';
+
+.#{$prefix}-carousel {
+  border: 1px solid #000;
+  position: relative;
+  background: #364D79;
+
+  &-scroll {
+    overflow: hidden;
+  }
+
+  &-wrapper {
+    white-space: nowrap;
+    transition: all 0.3s;
+  }
+
+  &-item {
+    display: inline-block;
+  }
+
+  &-dot {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+
+    >div {
+      width: 15px;
+      height: 4px;
+      background: #fff;
+      opacity: 0.5;
+      margin-right: 10px;
+      display: inline-block;
+      transition: all 0.3s;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 1
+      }
+
+      &.active {
+        width: 20px;
+        opacity: 1
+      }
+    }
+  }
+}

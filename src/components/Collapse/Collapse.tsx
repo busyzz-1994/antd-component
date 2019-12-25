@@ -8,6 +8,7 @@ interface IProps {
   defaultActiveKey?: Array<string | number>;
   activeKey?: Array<string | number>;
   expandIconPosition?: 'left' | 'right';
+  accordion?: boolean;
 }
 interface IState {
   activeKey?: Array<string | number>;
@@ -23,7 +24,8 @@ export default class extends Component<IProps, IState> {
     return null;
   };
   static defaultProps: Partial<IProps> = {
-    expandIconPosition: 'right'
+    expandIconPosition: 'right',
+    accordion: false
   };
   constructor(props) {
     super(props);
@@ -32,9 +34,22 @@ export default class extends Component<IProps, IState> {
       activeKey: activeKey || []
     };
   }
-  panelChange = (key, onChange) => {
+  getActiveKey = key => {
+    let { accordion } = this.props;
     let { activeKey } = this.state;
-    activeKey = toggleArray(activeKey, key);
+    //使用手风琴模式 ， 至多开启一个项目
+    if (accordion) {
+      //当前key在列表中
+      let exist = activeKey.indexOf(key) !== -1;
+      activeKey = [];
+      if (!exist) activeKey.push(key);
+    } else {
+      activeKey = toggleArray(activeKey, key);
+    }
+    return activeKey;
+  };
+  panelChange = (key, onChange) => {
+    let activeKey = this.getActiveKey(key);
     if (onChange && 'activeKey' in this.props) {
       onChange(activeKey);
     } else {
@@ -49,7 +64,7 @@ export default class extends Component<IProps, IState> {
     });
     return (
       <div className={classes}>
-        {React.Children.map(children, (child, index) => {
+        {React.Children.map(children, child => {
           //@ts-ignore
           let { key } = child;
           return React.cloneElement(child as React.ReactElement, {
