@@ -8,7 +8,7 @@ interface IProps {
 }
 export default class extends Component<IProps> {
   static defaultProps = {
-    autoplay: false
+    autoplay: true
   };
   state = {
     scrollWidth: 0,
@@ -25,6 +25,7 @@ export default class extends Component<IProps> {
     }
   }
   scrollDom = React.createRef<HTMLDivElement>();
+  wrapperDom = React.createRef<HTMLDivElement>();
   setScrollWidth = () => {
     let scrollWidth = this.getScrollWidth();
     this.setState({ scrollWidth });
@@ -42,7 +43,7 @@ export default class extends Component<IProps> {
     if (this.timer) this.end();
     this.timer = setInterval(() => {
       this.next();
-    }, 3000);
+    }, 2000);
   };
   end = () => {
     if (this.timer) {
@@ -54,8 +55,11 @@ export default class extends Component<IProps> {
     let childLen = this.getChildLength();
     let { activeIndex } = this.state;
     //最后一条
-    if (activeIndex >= childLen - 1) {
-      activeIndex = 0;
+    if (activeIndex >= childLen) {
+      this.wrapperDom.current.style.transitionDuration = '0ms';
+      this.wrapperDom.current.style.transform = 'translateX(0px)';
+      this.wrapperDom.current.style.transitionDuration = '1.5s';
+      activeIndex = 1;
     } else {
       activeIndex = activeIndex + 1;
     }
@@ -65,16 +69,25 @@ export default class extends Component<IProps> {
     let { children } = this.props;
     return React.Children.count(children);
   };
+  padChild = childrenArray => {
+    if (childrenArray.length === 1) return childrenArray;
+
+    let firstItem = childrenArray[0],
+      lastItem = childrenArray[childrenArray.length - 1];
+    return [lastItem, ...childrenArray, firstItem];
+  };
   render() {
     const { scrollWidth, activeIndex } = this.state;
     const { children } = this.props;
-    const s = `translateX(-${scrollWidth * activeIndex}px)`;
+    const s = `translateX(-${scrollWidth * (activeIndex + 1)}px)`;
     const wrapperStyle: React.CSSProperties = {
       transform: s,
       msTransform: s,
       WebkitTransform: s
     };
+    console.log('okkkk');
     const childrenArray = React.Children.toArray(children);
+    const padArray = this.padChild(childrenArray);
     return (
       <div className={prefixCls}>
         <div
@@ -83,8 +96,12 @@ export default class extends Component<IProps> {
           ref={this.scrollDom}
           className={prefixCls + '-scroll'}
         >
-          <div style={wrapperStyle} className={prefixCls + '-wrapper'}>
-            {childrenArray.map((item, index) => (
+          <div
+            ref={this.wrapperDom}
+            style={wrapperStyle}
+            className={prefixCls + '-wrapper'}
+          >
+            {padArray.map((item, index) => (
               <div
                 key={index}
                 style={{ width: scrollWidth }}

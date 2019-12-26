@@ -38,9 +38,9 @@ export default class extends Component<any, any> {
           </MCollapse> */}
         </div>
         <MCarousel>
-          <div style={{ height: 100 }}>sdasdas</div>
-          <div>ppppp</div>
-          <div>dsad4545</div>
+          <div style={{ height: 100 }}>111</div>
+          <div>222</div>
+          <div>333</div>
         </MCarousel>
         <Button onClick={() => this.setState({ marginTop: 200 })}>
           onclick
