@@ -1,0 +1,67 @@
+@import '../../style/themes/default.scss';
+@import '../../style/mixin/index.scss';
+
+.#{$prefix}-select {
+  width: 120px;
+  height: 30px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  transition: all 0.3s;
+  position: relative;
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $primary-color;
+  }
+
+  &-text {
+    height: 100%;
+    line-height: 28px;
+    margin: 0 24px 0 10px;
+    @include ellipsis;
+
+  }
+
+  &-icon {
+    position: absolute;
+    font-size: 12px;
+    right: 11px;
+    top: 50%;
+    margin-top: -8px;
+    color: rgba(0, 0, 0, 0.25);
+    transition: all 0.3s;
+  }
+
+  &-selected {
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+    border-color: $primary-color;
+  }
+
+  &-selected &-icon {
+    transform: rotate(180deg);
+  }
+
+  //popup
+  &-popup {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    padding: 5px 0;
+    max-height: 200px;
+    overflow-y: auto;
+
+    &-item {
+      padding: 0 6px;
+      cursor: pointer;
+      transition: all 0.3s;
+      height: 30px;
+      line-height: 30px;
+      @include ellipsis;
+
+      &:hover,
+      &.active {
+        background-color: #e6f7ff;
+      }
+    }
+  }
+}

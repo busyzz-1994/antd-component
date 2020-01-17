@@ -111,3 +111,79 @@ body {
   opacity: 0;
   transition: opacity 300ms, transform 300ms;
 }
+
+.transition {
+  width: 50px;
+  height: 50px;
+  background: #f00;
+  transition: all 0.3s;
+
+  &.active {
+    // transform: translateX(100px);
+    animation: an 1s;
+  }
+}
+
+@keyframes an {
+  0% {
+    transform: translate(0px)
+  }
+
+  100% {
+    transform: translate(200px)
+  }
+}
+
+.okkk {
+  height: 50px;
+  width: 100px;
+  background: #9CDCDE;
+  // border-radius: 50px;
+  border-radius: 50px;
+  text-align: center;
+  line-height: 50px;
+}
+
+.ppp {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #000;
+  position: relative;
+
+  >div {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    right: 2px;
+    bottom: 2px;
+    background: #f00;
+    display: block;
+  }
+}
+
+@keyframes wavedEffect {
+  0% {
+    opacity: 1;
+    border-width: 1px;
+  }
+
+  100% {
+    opacity: 0;
+    left: -4px;
+    right: -4px;
+    top: -4px;
+    bottom: -4px;
+    border-width: 4px;
+  }
+}
+
+.cj {
+  background: #f00;
+  width: 100px;
+  height: 100px;
+  margin-left: 50px;
+}
+
+.busyzz-popup-class {
+  width: 500px;
+}

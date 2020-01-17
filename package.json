@@ -30,6 +30,7 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.1",
     "react-transition-group": "^4.2.2",
+    "react-use": "^13.17.0",
     "typescript": "^3.4.5",
     "zent": "^6.6.5"
   },

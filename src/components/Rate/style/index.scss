@@ -1,0 +1,58 @@
+@import '../../style/themes/default.scss';
+@import '../../style/mixin/index.scss';
+
+.#{$prefix}-rate {
+  display: inline-block;
+  font-size: 20px;
+
+  &-wrapper {
+    display: inline-block;
+    position: relative;
+  }
+
+  &-disabled {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.6);
+    cursor: not-allowed;
+  }
+
+  &-start {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    transition: 0.3 all;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+
+    &:not(:last-child) {
+      margin-right: 8px;
+    }
+
+    &-first {
+      color: #e8e8e8;
+    }
+
+    &-second {
+      color: #fadb14;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 50%;
+    }
+
+    &-half &-second {
+      overflow: hidden;
+    }
+
+    &-empty &-second {
+      width: 0;
+      overflow: hidden;
+    }
+  }
+}

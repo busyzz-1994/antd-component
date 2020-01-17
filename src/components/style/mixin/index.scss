@@ -38,6 +38,13 @@
   width: 100%;
 }
 
+@mixin ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+
 //设置点击后的动画环绕效果
 @mixin clickedEffect($border-color:$primary-color, $animationCount:1) {
   @keyframes borderEffect {
@@ -59,4 +66,33 @@
   border:1px solid $border-color;
   border-radius: $border-radius-xs;
   animation: borderEffect 0.3s ease-in-out $animationCount;
+}
+
+//点击实现 波纹效果  加在::after 或者before里面
+@mixin wave($color:$primary-color) {
+  content: '';
+  position: absolute;
+  display: block;
+  top: 1px;
+  left: 1px;
+  bottom: 1px;
+  right: 1px;
+  border: 1px solid $color;
+  border-radius: inherit;
+}
+
+@keyframes borderEffect {
+  0% {
+    opacity: 1;
+    border-width: 1px;
+  }
+
+  100% {
+    opacity: 0;
+    left: -4px;
+    right: -4px;
+    top: -4px;
+    bottom: -4px;
+    border-width: 4px;
+  }
 }

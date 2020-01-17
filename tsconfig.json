@@ -16,7 +16,8 @@
     "jsx": "preserve",
     "experimentalDecorators": true,
     "downlevelIteration": true,
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "allowUnusedLabels": true
   },
   "include": ["src"]
 }

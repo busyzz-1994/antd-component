@@ -8,7 +8,7 @@ interface IProps {
 }
 export default class extends Component<IProps> {
   static defaultProps = {
-    autoplay: true
+    autoplay: false
   };
   state = {
     scrollWidth: 0,
@@ -16,7 +16,7 @@ export default class extends Component<IProps> {
   };
   componentDidMount() {
     this.setScrollWidth();
-    this.start();
+    // this.start();
   }
   componentDidUpdate(prevProps, prevState) {
     let scrollWidth = this.getScrollWidth();
@@ -55,11 +55,8 @@ export default class extends Component<IProps> {
     let childLen = this.getChildLength();
     let { activeIndex } = this.state;
     //最后一条
-    if (activeIndex >= childLen) {
-      this.wrapperDom.current.style.transitionDuration = '0ms';
-      this.wrapperDom.current.style.transform = 'translateX(0px)';
-      this.wrapperDom.current.style.transitionDuration = '1.5s';
-      activeIndex = 1;
+    if (activeIndex >= childLen - 1) {
+      activeIndex = 0;
     } else {
       activeIndex = activeIndex + 1;
     }
@@ -79,15 +76,14 @@ export default class extends Component<IProps> {
   render() {
     const { scrollWidth, activeIndex } = this.state;
     const { children } = this.props;
-    const s = `translateX(-${scrollWidth * (activeIndex + 1)}px)`;
+    const s = `translateX(-${scrollWidth * activeIndex}px)`;
     const wrapperStyle: React.CSSProperties = {
       transform: s,
       msTransform: s,
       WebkitTransform: s
     };
-    console.log('okkkk');
     const childrenArray = React.Children.toArray(children);
-    const padArray = this.padChild(childrenArray);
+    // const padArray = this.padChild(childrenArray);
     return (
       <div className={prefixCls}>
         <div
@@ -96,21 +92,21 @@ export default class extends Component<IProps> {
           ref={this.scrollDom}
           className={prefixCls + '-scroll'}
         >
-          <div
+          {/* <div
             ref={this.wrapperDom}
             style={wrapperStyle}
             className={prefixCls + '-wrapper'}
-          >
-            {padArray.map((item, index) => (
-              <div
-                key={index}
-                style={{ width: scrollWidth }}
-                className={classNames(prefixCls + '-item')}
-              >
-                {item}
-              </div>
-            ))}
-          </div>
+          > */}
+          {childrenArray.map((item, index) => (
+            <div
+              key={index}
+              style={{ width: scrollWidth }}
+              className={classNames(prefixCls + '-item')}
+            >
+              {item}
+            </div>
+          ))}
+          {/* </div> */}
         </div>
         <div className={prefixCls + '-dot'}>
           {childrenArray.map((item, index) => (
