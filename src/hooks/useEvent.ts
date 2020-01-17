@@ -20,7 +20,9 @@ const useEvent = (
       dom = target;
     }
     dom.addEventListener(eventType, handler);
-    return () => [dom.removeEventListener(eventType, handler)];
+    return () => {
+      dom.removeEventListener(eventType, handler);
+    };
   }, []);
 };
 export default useEvent;
