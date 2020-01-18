@@ -55,9 +55,9 @@ const useScrollToTop = (
     if (isRef(target)) {
       target.current.scrollTop = currentDistance;
     } else {
-      if (document.documentElement.scrollTop !== undefined) {
+      if (document.documentElement.scrollTop) {
         document.documentElement.scrollTop = currentDistance;
-      } else {
+      } else if (document.body.scrollTop) {
         document.body.scrollTop = currentDistance;
       }
     }

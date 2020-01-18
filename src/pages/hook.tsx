@@ -14,14 +14,12 @@ interface IProps {
   id?: string;
 }
 export default () => {
-  // let progress = useRaf(2000);
-  let start = useScrollToTop();
-  console.log('iii');
+  let scrollToTop = useScrollToTop();
   return (
     <div>
       {/* {progress} */}
       <div style={{ height: 2000 }}>00</div>
-      <Button onClick={start}>pppp</Button>
+      <Button onClick={scrollToTop}>pppp</Button>
     </div>
   );
 };

@@ -12,7 +12,6 @@ const useInterval = (func: () => void, isRun: number | null) => {
     }
   };
   useEffect(() => {
-    clearTimer();
     if (isRun !== null) {
       timeRef.current = setInterval(() => {
         func();
