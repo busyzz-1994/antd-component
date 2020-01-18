@@ -20,3 +20,5 @@ export { default as useFavicon } from './useFavicon';
 export { default as useInterval } from './useInterval';
 export { default as useTimeout } from './useTimeout';
 export { default as useForceUpdate } from './useForceUpdate';
+export { default as useRaf } from './useRaf';
+export { default as useScrollToTop } from './useScrollToTop';
