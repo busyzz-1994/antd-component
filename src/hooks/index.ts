@@ -22,3 +22,4 @@ export { default as useTimeout } from './useTimeout';
 export { default as useForceUpdate } from './useForceUpdate';
 export { default as useRaf } from './useRaf';
 export { default as useScrollToTop } from './useScrollToTop';
+export { default as useToggle } from './useToggle';

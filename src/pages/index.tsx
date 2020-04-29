@@ -8,6 +8,9 @@ import classNames from 'classnames';
 import MRate from 'components/Rate';
 import MSelect from 'components/Select';
 import Hook from './hook';
+import { Link } from 'react-router-dom';
+import store from '../reduxStore';
+// import store from 'mRedux';
 interface Per {
   name: string;
   age: number;
@@ -15,6 +18,13 @@ interface Per {
 export const PerContext = React.createContext<Per>({ name: 'qzz', age: 23 });
 // const { Option } = Select;
 const { Option } = MSelect;
+function increment() {
+  return (dispatch) => {
+    setTimeout(() => {
+      dispatch({ type: 'add' });
+    }, 2000);
+  };
+}
 export default class extends Component<any, any> {
   state = {
     tagVisible: true,
@@ -26,54 +36,57 @@ export default class extends Component<any, any> {
     checked: true,
     move: false,
     startValue: 3,
-    list: []
+    list: [],
+    number: 0,
   };
   dom = React.createRef<HTMLDivElement>();
   en = React.createRef<HTMLDivElement>();
   componentDidMount() {
-    TransitionEvents.addEndEventListener(this.dom.current, () => {
-      console.log('oooo');
-    });
-    TransitionEvents.addStartEventListener(this.dom.current, () => {
-      console.log('start');
+    // TransitionEvents.addEndEventListener(this.dom.current, () => {
+    //   console.log('oooo');()
+    // });
+    // TransitionEvents.addStartEventListener(this.dom.current, () => {
+    //   console.log('start');
+    // });
+
+    store.subscribe(() => {
+      this.forceUpdate();
     });
   }
-  collapseChange = activeKey => {
+  collapseChange = (activeKey) => {
     this.setState({
-      activeKey
+      activeKey,
     });
   };
-  change = checked => {
+  change = (checked) => {
     console.log(checked);
     this.setState({ checked });
   };
   move = () => {
     this.setState({ move: true });
   };
-  mouseMove = e => {
+  mouseMove = (e) => {
     let dom = this.en.current;
   };
-  startChange = val => {
+  startChange = (val) => {
     this.setState({
-      startValue: val
+      startValue: val,
     });
   };
-  handleChange = val => {
+  handleChange = (val) => {
     // console.log('onchange', val);
   };
-  onSearch = val => {
+  onSearch = (val) => {
     // console.log('search:', val);
   };
-  onSelect = val => {
+  onSelect = (val) => {
     // console.log('select:', val);
   };
   push = () => {
-    const { list } = this.state;
-    this.setState({ list: [...list, 'php'] });
-    // this.setState(prevState => ({ list: [prevState.list] }));
+    window.history.replaceState(null, null, '/hh');
   };
   render() {
-    const { startValue, move } = this.state;
+    const { startValue, move, number } = this.state;
     return (
       <div>
         <div style={{ marginBottom: 100 }}>
@@ -82,23 +95,16 @@ export default class extends Component<any, any> {
             onClick={this.move}
             className={classNames('transition', { active: move })}
           ></div>
-          <Rate allowHalf={true} value={startValue} character="M" />
-          <div style={{ marginTop: 100 }}>
-            <MRate
-              allowHalf={true}
-              onChange={this.startChange}
-              value={startValue}
-              count={8}
-            />
-          </div>
-          <div style={{ marginTop: 50 }}>
-            <div style={{ marginTop: 200 }}>
-              <Button onClick={this.push}>push</Button>
-              <PerContext.Provider value={{ name: 'ooz', age: 999 }}>
-                <Hook />
-              </PerContext.Provider>
-            </div>
-          </div>
+          {store.getState().count}
+          <Button onClick={() => store.dispatch(increment())}>add</Button>
+          <Button onClick={() => store.dispatch({ type: 'reduce' })}>
+            reduce
+          </Button>
+          {number}
+          <Button onClick={() => this.setState({ number: number + 1 })}>
+            ++++
+          </Button>
+          <Link to="/list">list</Link>
         </div>
       </div>
     );

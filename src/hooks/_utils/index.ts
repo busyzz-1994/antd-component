@@ -10,7 +10,7 @@ export const isRef = (target): target is RefObject<HTMLElement> => {
 export const debounce = (func, delay: number = 500) => {
   let prevTime = null;
   let timer = null;
-  return (...agrs) => {
+  return (...args) => {
     let currentTime = Date.now();
     if (!prevTime) prevTime = currentTime;
     let diffTime = currentTime - prevTime;
@@ -20,7 +20,7 @@ export const debounce = (func, delay: number = 500) => {
       timer = null;
     }
     timer = setTimeout(() => {
-      func(...agrs);
+      func(...args);
     }, delay);
   };
 };

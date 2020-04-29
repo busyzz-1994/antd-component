@@ -11,12 +11,23 @@ import UserStore from './stores/User';
 import Index from './pages';
 import { LocaleProvider } from 'antd';
 import zh_CN from 'antd/lib/locale-provider/zh_CN';
+import CacheRoute, { CacheSwitch } from 'react-router-cache-route';
+import List from 'pages/list';
 const user = new UserStore();
 const settings = new SettingsStore();
 
-config.url(url => `${settings.apiServer}${url}`);
+config.url((url) => `${settings.apiServer}${url}`);
 
 class App extends Component {
+  componentDidMount() {
+    window.addEventListener('pushstate', (e) => {
+      console.log('pushstate');
+    });
+    window.addEventListener('popstate', (e) => {
+      console.log('popstate');
+      console.log(e);
+    });
+  }
   render() {
     return (
       <LocaleProvider locale={zh_CN}>
@@ -26,10 +37,11 @@ class App extends Component {
               <DevTools noPanel />
             ) : null}
             <Router>
-              <Switch>
-                <Route exact path="/" component={Index} />
+              <CacheSwitch>
+                <CacheRoute exact path="/" component={Index} />
+                <Route exact path="/list" component={List} />
                 <Route exact path="//settings" component={Settings} />
-              </Switch>
+              </CacheSwitch>
             </Router>
           </Fragment>
         </Provider>

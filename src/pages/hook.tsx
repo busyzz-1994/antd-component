@@ -7,19 +7,20 @@ import {
   useTimeout,
   useForceUpdate,
   useRaf,
-  useScrollToTop
+  useScrollToTop,
+  useToggle
 } from 'hooks';
 import { debounce } from 'hooks/_utils';
 interface IProps {
   id?: string;
 }
 export default () => {
-  let scrollToTop = useScrollToTop();
+  let [status, toggle] = useToggle('no', 'ok');
   return (
     <div>
       {/* {progress} */}
-      <div style={{ height: 2000 }}>00</div>
-      <Button onClick={scrollToTop}>pppp</Button>
+      <div>{status + ''}</div>
+      <Button onClick={() => toggle()}>pppp</Button>
     </div>
   );
 };
